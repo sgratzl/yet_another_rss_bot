@@ -1,0 +1,45 @@
+{
+  "name": "yet_another_rss_bot",
+  "description": "Telegram Bot for forwarding webhooks",
+  "version": "1.0.0",
+  "private": true,
+  "author": {
+    "name": "Samuel Gratzl",
+    "email": "sam@sgratzl.com",
+    "url": "https://www.sgratzl.com"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sgratzl/yet_another_rss_bot.git"
+  },
+  "bugs": {
+    "url": "https://github.com/sgratzl/yet_another_rss_bot/issues"
+  },
+  "homepage": "https://github.com/sgratzl/yet_another_rss_bot#readme",
+  "engines": {
+    "node": "10.x"
+  },
+  "scripts": {
+    "compile": "tsc",
+    "watch": "tsc --watch",
+    "postbuild": "npm run test",
+    "build": "npm run compile",
+    "test": "eslint -c ./.eslintrc.js api/**/*.ts",
+    "release:major": "release-it major",
+    "release:minor": "release-it minor",
+    "release:patch": "release-it patch",
+    "release:pre": "release-it --preRelease=alpha --npm.tag=next"
+  },
+  "dependencies": {
+    "telegraf": "^3.33.0"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^2.4.0",
+    "@typescript-eslint/parser": "^2.4.0",
+    "eslint": "^6.5.1",
+    "@now/node": "^1.0.1",
+    "now": "^16.3.1",
+    "typescript": "^3.6.4"
+  }
+}
