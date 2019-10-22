@@ -10,7 +10,7 @@ export function getCollection() {
   return client.then((client) => client.db().collection('yet_another_rss_bot_session'));
 }
 
-export function getSession<T>(q: {key: string}): Promise<T> {
+export function getSession<T>(q: {key?: string, [key: string]: any}): Promise<T> {
   return getCollection().then((col) => {
     return col.findOne(q);
   }).then((doc) => doc || {...q});
@@ -28,19 +28,27 @@ export declare interface ISessionContext<T> extends ContextMessageUpdate {
 
 function getSessionKey(ctx: ContextMessageUpdate) {
   if (ctx.from && ctx.chat) {
-    return `${ctx.from.id}:${ctx.chat.id}`
+    return `${ctx.from.id}:${ctx.chat.id}`;
   } else if (ctx.from && ctx.inlineQuery) {
-    return `${ctx.from.id}:${ctx.from.id}`
+    return `${ctx.from.id}:${ctx.from.id}`;
   }
   return null;
 }
 
 export async function session<T>(ctx: ISessionContext<T>, next?: (ctx?: ISessionContext<T>) => any) {
   const key = getSessionKey(ctx) || 'all';
-  ctx.session = await getSession({key});
+  let session = await getSession<T>({key});
+  Object.defineProperty(ctx, 'session', {
+    get() {
+      return session;
+    },
+    set(value) {
+      session = value;
+    }
+  });
   if (next) {
     await next(ctx);
   }
-  await saveSession({key}, ctx.session);
+  await saveSession({key}, session);
 };
 export default session;
