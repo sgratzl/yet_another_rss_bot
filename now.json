@@ -1,7 +1,8 @@
 {
   "env": {
-    "BOT_TOKEN": "@bot_token",
-    "WEBHOOK_SECRET": "@webhook_secret"
+    "BOT_TOKEN": "@yet_another_rss_bot_bot_token",
+    "MONGODB_URL": "@yet_another_rss_bot_mongodb_url",
+    "CALLMYAPP_KEY": "@yet_another_rss_bot_callmyapp_key"
   },
   "github": {
     "silent": true
