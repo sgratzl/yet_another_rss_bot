@@ -10,7 +10,7 @@ export function getCollection() {
   return client.then((client) => client.db().collection('yet_another_rss_bot_session'));
 }
 
-export function getSession<T>(q: {key?: string, [key: string]: any}): Promise<T> {
+export function getSession<T>(q: {key?: string; [key: string]: any}): Promise<T> {
   return getCollection().then((col) => {
     return col.findOne(q);
   }).then((doc) => doc || {...q});
@@ -35,7 +35,7 @@ function getSessionKey(ctx: ContextMessageUpdate) {
   return null;
 }
 
-export async function session<T>(ctx: ISessionContext<T>, next?: (ctx?: ISessionContext<T>) => any) {
+export default async function session<T>(ctx: ISessionContext<T>, next?: (ctx?: ISessionContext<T>) => any) {
   const key = getSessionKey(ctx) || 'all';
   let session = await getSession<T>({key});
   Object.defineProperty(ctx, 'session', {
@@ -50,5 +50,4 @@ export async function session<T>(ctx: ISessionContext<T>, next?: (ctx?: ISession
     await next(ctx);
   }
   await saveSession({key}, session);
-};
-export default session;
+}

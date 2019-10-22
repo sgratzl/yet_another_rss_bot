@@ -1,11 +1,7 @@
 import {IRSSFeed} from './model';
 import fetch from 'node-fetch';
 import FeedParser, {Item} from 'feedparser';
-import {ExtraReplyMessage, Message} from 'telegraf/typings/telegram-types';
-
-export interface IReplyer {
-  reply: (text: string, extra?: ExtraReplyMessage) => Promise<Message>;
-}
+import {MARKDOWN, IReplyer} from './telegram';
 
 export default async function updateFeed(feed: IRSSFeed, replyer: IReplyer) {
   const parser = new FeedParser({
@@ -16,9 +12,7 @@ export default async function updateFeed(feed: IRSSFeed, replyer: IReplyer) {
 
   function handleItem(item: Item) {
     const msg = `${item.meta.title}\n[${item.link}](${item.title})`;
-    return replyer.reply(msg, {
-      parse_mode: 'Markdown'
-    }).then(() => item);
+    return replyer.reply(msg, MARKDOWN).then(() => item);
   }
 
   const stream = await fetch(feed.url);

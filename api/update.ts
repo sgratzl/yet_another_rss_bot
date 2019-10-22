@@ -1,9 +1,9 @@
-import {ok, badRequest} from "./_internal/responses";
-import {NowRequest, NowResponse} from "@now/node";
-import {getSession} from "./_internal/session";
-import {IRSSSession} from "./_internal/model";
-import updateFeed from "./_internal/updateFeed";
-import {replyer} from "./_internal/telegram";
+import {ok, badRequest} from './_internal/responses';
+import {NowRequest, NowResponse} from '@now/node';
+import {getSession} from './_internal/session';
+import {IRSSSession} from './_internal/model';
+import updateFeed from './_internal/updateFeed';
+import {replyer} from './_internal/telegram';
 
 
 export default async function handle(req: NowRequest, res: NowResponse) {

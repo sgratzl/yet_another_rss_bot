@@ -3,7 +3,7 @@ import Telegraf from 'telegraf';
 import session, {ISessionContext} from './_internal/session';
 import {ok} from './_internal/responses';
 import {IRSSSession} from './_internal/model';
-import {toArgs} from './_internal/telegram';
+import {toArgs, MARKDOWN} from './_internal/telegram';
 import {createFeed} from './_internal/feed';
 import {deregisterCallback} from './_internal/callback';
 
@@ -32,11 +32,9 @@ bot.command('add', async (ctx) => {
   return Promise.all(newFeeds).then((feeds) => ctx.session.feeds.push(...feeds));
 });
 
-bot.command('list', async (ctx) => {
-  ctx.reply(`registered feeds:
-${ctx.session.feeds.map((feed) => feed.url)}`, {
-    parse_mode: 'Markdown'
-  });
+bot.command('list', (ctx) => {
+  return ctx.reply(`registered feeds:
+${ctx.session.feeds.map((feed) => feed.url)}`, MARKDOWN);
 });
 
 bot.command('remove', async (ctx) => {
@@ -50,9 +48,7 @@ bot.command('remove', async (ctx) => {
   await Promise.all(feeds.map((feed) => deregisterCallback(feed)));
 
   return ctx.reply(`deregistered feeds:
-${feeds.map((feed) => feed.url)}`, {
-    parse_mode: 'Markdown'
-  });
+${feeds.map((feed) => feed.url)}`, MARKDOWN);
 });
 
 export default async function handle(req: NowRequest, res: NowResponse) {
