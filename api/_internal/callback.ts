@@ -5,7 +5,7 @@ import {URL} from 'url';
 const API_KEY = process.env.CALLMYAPP_KEY!;
 
 export function registerCallback(feed: IRSSFeed, serverUrl: string) {
-  const url = new URL('https://callmyapp.com/api/1.0/create');
+  const url = new URL('https://callmyapp.com/api/1.0/create/');
   url.searchParams.set('api_key', API_KEY);
   url.searchParams.set('callback_url', `${serverUrl}/update?id=${encodeURIComponent(feed.uid)}`);
   url.searchParams.set('callback_time', new Date(Date.now() + 1000).toISOString());

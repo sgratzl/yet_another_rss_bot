@@ -29,7 +29,8 @@
     "release:major": "release-it major",
     "release:minor": "release-it minor",
     "release:patch": "release-it patch",
-    "release:pre": "release-it --preRelease=alpha --npm.tag=next"
+    "release:pre": "release-it --preRelease=alpha --npm.tag=next",
+    "start": "ts-node -r dotenv/config ./api/bot.ts"
   },
   "dependencies": {
     "@types/feedparser": "^2.2.3",
@@ -43,11 +44,13 @@
     "uuid": "^3.3.3"
   },
   "devDependencies": {
+    "@now/node": "^1.0.2",
     "@typescript-eslint/eslint-plugin": "^2.5.0",
     "@typescript-eslint/parser": "^2.5.0",
+    "dotenv": "^8.2.0",
     "eslint": "^6.5.1",
-    "@now/node": "^1.0.2",
     "now": "^16.4.0",
+    "ts-node": "^8.4.1",
     "typescript": "^3.6.4"
   }
 }

@@ -58,3 +58,18 @@ export default async function handle(req: NowRequest, res: NowResponse) {
 
   return ok(res);
 }
+
+async function _main() {
+  if (process.argv[0] && process.argv[0].startsWith('https')) {
+    await bot.telegram.setWebhook(process.argv[0]);
+    console.log('set webhook ', process.argv[0]);
+    return;
+  }
+
+  await bot.telegram.deleteWebhook();
+  bot.startPolling();
+}
+
+if (require.main === module) {
+  _main();
+}
