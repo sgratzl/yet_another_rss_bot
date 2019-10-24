@@ -59,7 +59,7 @@ bot.command('update', async (ctx) => {
   ${feeds.map((feed) => feed.url).join('\n')}`, NO_PREVIEW);
 });
 
-bot.command('removeAll', async (ctx) => {
+bot.command('removeall', async (ctx) => {
   const chatId = ctx.chat!.id;
   const feeds = await getFeeds(chatId);
 
