@@ -22,5 +22,6 @@ export function replyer(chatId: string | number) {
 }
 
 export const MARKDOWN: ExtraReplyMessage = {
-  parse_mode: 'Markdown' // eslint-disable-line @typescript-eslint/camelcase
+  parse_mode: 'Markdown', // eslint-disable-line @typescript-eslint/camelcase,
+  disable_web_page_preview: true // eslint-disable-line @typescript-eslint/camelcase,
 };
