@@ -7,7 +7,7 @@ import {toArgs, MARKDOWN} from './_internal/telegram';
 import {createFeed} from './_internal/feed';
 import {deregisterCallback} from './_internal/callback';
 
-let serverUrl = '';
+// let serverUrl = '';
 
 const bot = new Telegraf<ISessionContext<IRSSSession>>(process.env.BOT_TOKEN!, {
   username: 'yet_another_rss_bot'
@@ -27,7 +27,7 @@ bot.command('add', async (ctx) => {
   if (args.length === 0) {
     return ctx.reply('Please provide one or more RSS URLs as arguments');
   }
-  const newFeeds = args.map((url) => createFeed(url, ctx, serverUrl));
+  const newFeeds = args.map((url) => createFeed(url, ctx));
   ctx.session.chatId = ctx.chat!.id;
   return Promise.all(newFeeds).then((feeds) => ctx.session.feeds.push(...feeds));
 });
@@ -52,7 +52,7 @@ ${feeds.map((feed) => feed.url)}`, MARKDOWN);
 });
 
 export default async function handle(req: NowRequest, res: NowResponse) {
-  serverUrl = `https://${req.headers.host}/api`;
+  // serverUrl = `https://${req.headers.host}/api`;
 
   await bot.handleUpdate(req.body);
 

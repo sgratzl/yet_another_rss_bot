@@ -15,7 +15,7 @@ export default async function handle(_req: NowRequest, res: NowResponse) {
   const feeds = ([] as (IReplyer & {feed: IRSSFeed})[]).concat(...sessions.map((entry) => {
     const reply = replyer(entry.chatId);
     return entry.feeds.map((feed) => ({feed, reply}));
-  ));
+  }));
 
   await Promise.all(feeds.map((entry) => updateFeed(entry.feed, entry)));
   return ok(res);

@@ -3,7 +3,7 @@ import {ISessionContext} from './session';
 import uuid  from 'uuid/v4';
 // import {registerCallback} from './callback';
 
-export async function createFeed(url: string, ctx: ISessionContext<IRSSSession>, serverUrl: string): Promise<IRSSFeed> {
+export async function createFeed(url: string, ctx: ISessionContext<IRSSSession>): Promise<IRSSFeed> {
 
   const feed: IRSSFeed = {
     url,
