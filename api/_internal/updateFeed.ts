@@ -26,7 +26,7 @@ export default async function updateFeed(feed: IRSSFeed, replyer: IReplyer) {
 
   return Promise.all(items).then((items) => {
     items.sort((a, b) => (a.date || a.meta.date!).getTime() - (b.date || b.meta.date!).getTime());
-    const msgs = items.map((item) => `${item.meta.title}\n**[${item.title}](${item.link})**\n${item.summary || item.description || ''}`)
+    const msgs = items.map((item) => `${item.meta.title}\n**[${item.title}](${item.link})**\n${item.summary || item.description || ''}`);
     const replies: string[] = [];
     let acc = '';
     msgs.forEach((msg) => {
