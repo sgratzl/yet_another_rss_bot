@@ -27,7 +27,7 @@ bot.command('add', async (ctx) => {
   if (args.length === 0) {
     return ctx.reply('Please provide one or more RSS URLs as arguments');
   }
-  const newFeeds = args.map((url) => createFeed(url, ctx));
+  const newFeeds = args.slice(0, 1).map((url) => createFeed(url, ctx));
   ctx.session.chatId = ctx.chat!.id;
   return Promise.all(newFeeds).then((feeds) => ctx.session.feeds.push(...feeds));
 });
@@ -60,12 +60,14 @@ export default async function handle(req: NowRequest, res: NowResponse) {
 }
 
 async function _main() {
-  if (process.argv[0] && process.argv[0].startsWith('https')) {
-    await bot.telegram.setWebhook(process.argv[0]);
-    console.log('set webhook ', process.argv[0]);
+  const lastArg = process.argv[process.argv.length - 1];
+  if (lastArg.startsWith('https')) {
+    await bot.telegram.setWebhook(lastArg);
+    console.log('set webhook ', lastArg);
     return;
   }
 
+  console.log('start bot', process.argv);
   await bot.telegram.deleteWebhook();
   bot.startPolling();
 }
