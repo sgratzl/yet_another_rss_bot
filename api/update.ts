@@ -1,22 +1,22 @@
-import {ok, badRequest} from './_internal/responses';
+import {ok} from './_internal/responses';
 import {NowRequest, NowResponse} from '@now/node';
-import {getSession} from './_internal/session';
-import {IRSSSession} from './_internal/model';
+import {getAllSessions} from './_internal/session';
+import {IRSSSession, IRSSFeed} from './_internal/model';
 import updateFeed from './_internal/updateFeed';
-import {replyer} from './_internal/telegram';
+import {replyer, IReplyer} from './_internal/telegram';
 
 
-export default async function handle(req: NowRequest, res: NowResponse) {
-  const uid = decodeURIComponent(req.query.id as string);
-  const session = await getSession<IRSSSession>({'feeds.uid': uid});
-  if (!session.feeds) {
-    return badRequest(res);
-  }
-  const feed = session.feeds.find((d) => d.uid === uid);
-  if (!feed) {
-    return badRequest(res);
-  }
+export default async function handle(_req: NowRequest, res: NowResponse) {
+  // const uid = decodeURIComponent(req.query.id as string);
+  const sessions = await getAllSessions<IRSSSession>({
+    feeds: { $exists: true, $not: {$size: 0} }
+  });
 
-  await updateFeed(feed, {reply: replyer(session.chatId)});
+  const feeds = ([] as (IReplyer & {feed: IRSSFeed})[]).concat(...sessions.map((entry) => {
+    const reply = replyer(entry.chatId);
+    return entry.feeds.map((feed) => ({feed, reply}));
+  ));
+
+  await Promise.all(feeds.map((entry) => updateFeed(entry.feed, entry)));
   return ok(res);
 }

@@ -16,6 +16,12 @@ export function getSession<T>(q: {key?: string; [key: string]: any}): Promise<T>
   }).then((doc) => doc || {...q});
 }
 
+export function getAllSessions<T>(q: {key?: string; [key: string]: any}): Promise<T[]> {
+  return getCollection().then((col) => {
+    return col.find(q).toArray();
+  });
+}
+
 export function saveSession<T>(q: {key: string}, session: T): Promise<any> {
   return getCollection().then((col) => {
     return col.updateOne(q, {$set: {...q, ...session}}, {upsert: true});
