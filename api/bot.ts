@@ -3,9 +3,10 @@ import Telegraf from 'telegraf';
 import session, {ISessionContext} from './_internal/session';
 import {ok} from './_internal/responses';
 import {IRSSSession} from './_internal/model';
-import {toArgs, MARKDOWN} from './_internal/telegram';
+import {toArgs, MARKDOWN, replyer} from './_internal/telegram';
 import {createFeed} from './_internal/feed';
-import {deregisterCallback} from './_internal/callback';
+import updateFeed from './_internal/updateFeed';
+// import {deregisterCallback} from './_internal/callback';
 
 // let serverUrl = '';
 
@@ -54,10 +55,19 @@ bot.command('remove', async (ctx) => {
   const feeds = ctx.session.feeds.filter((d) => args.includes(d.url));
   ctx.session.feeds = ctx.session.feeds.filter((d) => !args.includes(d.url));
 
-  await Promise.all(feeds.map((feed) => deregisterCallback(feed)));
+  // await Promise.all(feeds.map((feed) => deregisterCallback(feed)));
 
-  return ctx.reply(`deregistered feeds:
-${feeds.map((feed) => feed.url)}`, MARKDOWN);
+  return ctx.reply(`registered feeds:
+  ${feeds.map((feed) => ` * ${feed.url}`).join('\n')}`, MARKDOWN);
+});
+
+bot.command('update', async (ctx) => {
+  const feeds = ctx.session.feeds;
+
+  // await Promise.all(feeds.map((feed) => deregisterCallback(feed)));
+
+  const reply = replyer(ctx.session.chatId);
+  await Promise.all(feeds.map((feed) => updateFeed(feed, {reply})));
 });
 
 export default async function handle(req: NowRequest, res: NowResponse) {
