@@ -9,7 +9,7 @@ export async function createFeed(url: string, ctx: ISessionContext<IRSSSession>)
     url,
     intervalUnit: 'minutes',
     interval: 15,
-    lastUpdateTime: Date.now(),
+    lastUpdateTime: 0,
     uid: uuid(),
     callbackId: '',
   };

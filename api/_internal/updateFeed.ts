@@ -22,7 +22,6 @@ export default async function updateFeed(feed: IRSSFeed, replyer: IReplyer) {
       .on('data', (item: Item) => {
         const date = item.date || item.meta.date;
         if (date && date > lastUpdate) {
-          feed.lastUpdateTime = date.getTime();
           items.push(handleItem(item));
         }
       })
@@ -30,5 +29,7 @@ export default async function updateFeed(feed: IRSSFeed, replyer: IReplyer) {
       .on('error', (error: any) => reject(error));
   });
 
-  return Promise.all(items);
+  return Promise.all(items).then((items) => {
+    feed.lastUpdateTime = items.reduce((acc, item) => Math.max(acc, (item.date || item.meta.date!).getTime()), feed.lastUpdateTime);
+  });
 }

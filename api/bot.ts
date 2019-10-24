@@ -44,7 +44,7 @@ bot.command('list', (ctx) => {
     return ctx.reply('No feeds registered');
   }
   return ctx.reply(`registered feeds:
-${ctx.session.feeds.map((feed) => ` * ${feed.url}`).join('\n')}`, MARKDOWN);
+${ctx.session.feeds.map((feed) => feed.url).join('\n')}`, MARKDOWN);
 });
 
 bot.command('remove', async (ctx) => {
@@ -57,16 +57,14 @@ bot.command('remove', async (ctx) => {
 
   // await Promise.all(feeds.map((feed) => deregisterCallback(feed)));
 
-  return ctx.reply(`registered feeds:
-  ${feeds.map((feed) => ` * ${feed.url}`).join('\n')}`, MARKDOWN);
+  return ctx.reply(`removed feeds:
+${feeds.map((feed) => feed.url).join('\n')}`, MARKDOWN);
 });
 
 bot.command('update', async (ctx) => {
   const feeds = ctx.session.feeds;
 
-  // await Promise.all(feeds.map((feed) => deregisterCallback(feed)));
-
-  const reply = replyer(ctx.session.chatId);
+  const reply = ctx.reply.bind(ctx);
   await Promise.all(feeds.map((feed) => updateFeed(feed, {reply})));
 });
 
@@ -86,7 +84,7 @@ async function _main() {
     return;
   }
 
-  console.log('start bot', process.argv);
+  console.log('start bot');
   await bot.telegram.deleteWebhook();
   bot.startPolling();
 }
