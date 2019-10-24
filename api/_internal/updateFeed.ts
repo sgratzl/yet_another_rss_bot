@@ -28,16 +28,21 @@ export default async function updateFeed(feed: IRSSFeed, replyer: IReplyer) {
     items.sort((a, b) => (a.date || a.meta.date!).getTime() - (b.date || b.meta.date!).getTime());
     const msgs = items.map((item) => `${item.meta.title}\n**[${item.title}](${item.link})**\n${item.summary || item.description || ''}`);
     const replies: string[] = [];
-    let acc = '';
-    msgs.forEach((msg) => {
-      if (acc.length >= 4000) {
+    if (msgs.length <= 5) {
+      replies.push(...msgs);
+    } else {
+      // bundle
+      let acc = '';
+      msgs.forEach((msg) => {
+        if (acc.length >= 4000) {
+          replies.push(acc);
+          acc = '';
+        }
+        acc = acc + msg + '\n\n';
+      });
+      if (acc.length > 0) {
         replies.push(acc);
-        acc = '';
       }
-      acc = acc + msg + '\n\n';
-    });
-    if (acc.length > 0) {
-      replies.push(acc);
     }
 
     feed.lastUpdateTime = items.reduce((acc, item) => Math.max(acc, (item.date || item.meta.date!).getTime()), feed.lastUpdateTime);
