@@ -11,7 +11,7 @@ export default async function updateFeed(feed: IRSSFeed, replyer: IReplyer) {
   const lastUpdate = new Date(feed.lastUpdateTime);
 
   function handleItem(item: Item) {
-    const msg = `${item.meta.title}\n[${item.link}](${item.title})`;
+    const msg = `${item.meta.title}\n**[${item.title}](${item.link})**\n${item.summary || item.description}`;
     return replyer.reply(msg, MARKDOWN).then(() => item);
   }
 
