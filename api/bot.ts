@@ -3,7 +3,7 @@ import Telegraf from 'telegraf';
 import session, {ISessionContext} from './_internal/session';
 import {ok} from './_internal/responses';
 import {IRSSSession} from './_internal/model';
-import {toArgs, MARKDOWN, replyer} from './_internal/telegram';
+import {toArgs, MARKDOWN} from './_internal/telegram';
 import {createFeed} from './_internal/feed';
 import updateFeed from './_internal/updateFeed';
 // import {deregisterCallback} from './_internal/callback';
