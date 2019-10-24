@@ -1,6 +1,6 @@
 import {ok} from './_internal/responses';
 import {NowRequest, NowResponse} from '@now/node';
-import {getAllSessions} from './_internal/session';
+import {getAllSessions, saveSession} from './_internal/session';
 import {IRSSSession, IRSSFeed} from './_internal/model';
 import updateFeed from './_internal/updateFeed';
 import {replyer, IReplyer} from './_internal/telegram';
@@ -12,11 +12,18 @@ export default async function handle(_req: NowRequest, res: NowResponse) {
     feeds: { $exists: true, $not: {$size: 0} }
   });
 
-  const feeds = ([] as (IReplyer & {feed: IRSSFeed})[]).concat(...sessions.map((entry) => {
+  const feeds = ([] as (IReplyer & {feed: IRSSFeed, bak: number, entry: IRSSSession})[]).concat(...sessions.map((entry) => {
     const reply = replyer(entry.chatId);
-    return entry.feeds.map((feed) => ({feed, reply}));
+    return entry.feeds.map((feed) => ({feed, reply, entry, bak: feed.lastUpdateTime}));
   }));
 
-  await Promise.all(feeds.map((entry) => updateFeed(entry.feed, entry)));
+  const entries = await Promise.all(feeds.map((entry) => updateFeed(entry.feed, entry).then(() => entry)));
+  const toCommit = new Set<IRSSSession>();
+  for (const entry of entries) {
+    if (entry.feed.lastUpdateTime > entry.bak) {
+      toCommit.add(entry.entry);
+    }
+  }
+  await Promise.all(Array.from(toCommit).map((entry) => saveSession({key: (entry as any).key}, entry)));
   return ok(res);
 }
