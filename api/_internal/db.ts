@@ -20,11 +20,11 @@ function getFeedCollection() {
 
 
 export function getFeedsToUpdate(frequency: string): Promise<IRSSFeed[]> {
-  return getFeedCollection().then((c) => c.find({frequency})).then((c) => c.toArray())
+  return getFeedCollection().then((c) => c.find({frequency})).then((c) => c.toArray());
 }
 
 export function getFeeds(chatId: number): Promise<IRSSFeed[]> {
-  return getFeedCollection().then((c) => c.find({chatId})).then((c) => c.toArray())
+  return getFeedCollection().then((c) => c.find({chatId})).then((c) => c.toArray());
 }
 
 export function deleteFeed(chatId: number, url: string) {
@@ -32,7 +32,7 @@ export function deleteFeed(chatId: number, url: string) {
 }
 
 export function deleteAllFeeds(chatId: number) {
-  return getFeedCollection().then((c) => c.deleteMany({chatId}))
+  return getFeedCollection().then((c) => c.deleteMany({chatId}));
 }
 
 export function insertFeed(feed: IRSSFeed) {

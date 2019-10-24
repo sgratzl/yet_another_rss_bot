@@ -1,5 +1,5 @@
-import {Telegram, ContextMessageUpdate} from 'telegraf';
-import {ExtraReplyMessage, Message} from 'telegraf/typings/telegram-types';
+import {ContextMessageUpdate} from 'telegraf';
+import {ExtraReplyMessage} from 'telegraf/typings/telegram-types';
 
 export function toArgs(ctx: ContextMessageUpdate) {
   const regex = /^\/([^@\s]+)@?(?:(\S+)|)\s?([\s\S]+)?$/i;
@@ -9,18 +9,6 @@ export function toArgs(ctx: ContextMessageUpdate) {
   }
   return !parts[3] ? [] : parts[3].split(/\s+/).filter((arg) => arg.length);
 }
-
-export interface IReplyer {
-  reply: (text: string, extra?: ExtraReplyMessage) => Promise<Message>;
-}
-
-
-export function replyer(chatId: string | number) {
-  const telegram = ;
-
-  return telegram.sendMessage.bind(telegram, chatId);
-}
-
 
 export const MARKDOWN: ExtraReplyMessage = {
   parse_mode: 'Markdown', // eslint-disable-line @typescript-eslint/camelcase,
