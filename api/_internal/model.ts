@@ -1,16 +1,25 @@
+import {ObjectID} from 'mongodb';
 
 export interface IRSSFeed {
-  uid: string;
-  url: string;
+  _id?: ObjectID;
 
-  intervalUnit: 'seconds' | 'minutes' | 'hours' | 'days' | 'months' | 'years';
-  interval: number;
+  chatId: number;
+  url: string;
+  previews: boolean;
+
+  frequency: 'asap' | 'hourly' | 'daily';
+
 
   lastUpdateTime: number;
-  callbackId: string;
 }
 
-export interface IRSSSession {
-  chatId: number;
-  feeds: IRSSFeed[];
+export function createFeed(url: string, chatId: number): IRSSFeed {
+  return {
+    chatId,
+    url,
+    previews: false,
+    frequency: 'hourly',
+
+    lastUpdateTime: 0
+  };
 }

@@ -1,26 +1,20 @@
 import {NowRequest, NowResponse} from '@now/node';
 import Telegraf from 'telegraf';
-import session, {ISessionContext} from './_internal/session';
 import {ok} from './_internal/responses';
-import {IRSSSession} from './_internal/model';
-import {toArgs, MARKDOWN} from './_internal/telegram';
-import {createFeed} from './_internal/feed';
+import {toArgs, NO_PREVIEW} from './_internal/telegram';
 import updateFeed from './_internal/updateFeed';
+import {createFeed} from './_internal/model';
+import {insertFeed, getFeeds, deleteFeed, saveFeed} from './_internal/db';
 // import {deregisterCallback} from './_internal/callback';
 
 // let serverUrl = '';
 
-const bot = new Telegraf<ISessionContext<IRSSSession>>(process.env.BOT_TOKEN!, {
+const bot = new Telegraf(process.env.BOT_TOKEN!, {
   username: 'yet_another_rss_bot'
 });
 
-bot.use(session);
-
 bot.start((ctx) => {
-  Object.assign(ctx.session, {
-    feeds: []
-  }, ctx.session);
-  ctx.reply('This bot forwards RSS updates as chat messages');
+  return ctx.reply('This bot forwards RSS updates as chat messages');
 });
 
 bot.command('add', async (ctx) => {
@@ -28,23 +22,17 @@ bot.command('add', async (ctx) => {
   if (args.length === 0) {
     return ctx.reply('Please provide one or more RSS URLs as arguments');
   }
-  const newFeeds = args.slice(0, 1).map((url) => createFeed(url, ctx));
-  if (!ctx.session.feeds) {
-    ctx.session.feeds = [];
-  }
-  ctx.session.chatId = ctx.chat!.id;
-  return Promise.all(newFeeds).then((feeds) => ctx.session.feeds.push(...feeds));
+  const chatId = ctx.chat!.id;
+  const feeds = await Promise.all(args.map((url) => insertFeed(createFeed(url, chatId))));
+  return ctx.reply(`registered feeds:
+  ${feeds.map((feed) => feed.url).join('\n')}`, NO_PREVIEW);
 });
 
-bot.command('list', (ctx) => {
-  if (!ctx.session.feeds) {
-    ctx.session.feeds = [];
-  }
-  if (!ctx.session.feeds) {
-    return ctx.reply('No feeds registered');
-  }
+bot.command('list', async (ctx) => {
+  const chatId = ctx.chat!.id;
+  const feeds = await getFeeds(chatId);
   return ctx.reply(`registered feeds:
-${ctx.session.feeds.map((feed) => feed.url).join('\n')}`, MARKDOWN);
+${feeds.map((feed) => feed.url).join('\n')}`, NO_PREVIEW);
 });
 
 bot.command('remove', async (ctx) => {
@@ -52,20 +40,32 @@ bot.command('remove', async (ctx) => {
   if (args.length === 0) {
     return ctx.reply('Please provide one or more RSS URLs as arguments');
   }
-  const feeds = ctx.session.feeds.filter((d) => args.includes(d.url));
-  ctx.session.feeds = ctx.session.feeds.filter((d) => !args.includes(d.url));
-
-  // await Promise.all(feeds.map((feed) => deregisterCallback(feed)));
-
+  const chatId = ctx.chat!.id;
+  await Promise.all(args.map((url) => deleteFeed(chatId, url)));
   return ctx.reply(`removed feeds:
-${feeds.map((feed) => feed.url).join('\n')}`, MARKDOWN);
+${args.join('\n')}`, NO_PREVIEW);
 });
 
 bot.command('update', async (ctx) => {
-  const feeds = ctx.session.feeds;
+  const chatId = ctx.chat!.id;
+  const feeds = await getFeeds(chatId);
 
-  const reply = ctx.reply.bind(ctx);
-  await Promise.all(feeds.map((feed) => updateFeed(feed, {reply})));
+  await ctx.telegram.sendChatAction(chatId, 'typing');
+  await Promise.all(
+    feeds.map((feed) => updateFeed(feed, ctx.telegram)
+      .then((update) => update ? saveFeed(update) : null))
+  );
+  await ctx.reply(`updated feeds:
+  ${feeds.map((feed) => feed.url).join('\n')}`, NO_PREVIEW);
+});
+
+bot.command('removeAll', async (ctx) => {
+  const chatId = ctx.chat!.id;
+  const feeds = await getFeeds(chatId);
+
+  await Promise.all(feeds.map((feed) => deleteFeed(feed.chatId, feed.url)));
+  return ctx.reply(`removed feeds:
+${feeds.map((feed) => feed.url).join('\n')}`, NO_PREVIEW);
 });
 
 export default async function handle(req: NowRequest, res: NowResponse) {

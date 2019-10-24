@@ -1,9 +1,10 @@
 import {IRSSFeed} from './model';
 import fetch from 'node-fetch';
 import FeedParser, {Item} from 'feedparser';
-import {MARKDOWN, IReplyer} from './telegram';
+import {NO_PREVIEW, MARKDOWN} from './telegram';
+import {Telegram} from 'telegraf';
 
-export default async function updateFeed(feed: IRSSFeed, replyer: IReplyer) {
+export default async function updateFeed(feed: IRSSFeed, telegram: Telegram) {
   const parser = new FeedParser({
     feedurl: feed.url,
     addmeta: true
@@ -25,6 +26,9 @@ export default async function updateFeed(feed: IRSSFeed, replyer: IReplyer) {
   });
 
   return Promise.all(items).then((items) => {
+    if (items.length === 0) {
+      return null;
+    }
     items.sort((a, b) => (a.date || a.meta.date!).getTime() - (b.date || b.meta.date!).getTime());
     const msgs = items.map((item) => `${item.meta.title}\n**[${item.title}](${item.link})**\n${item.summary || item.description || ''}`);
     const replies: string[] = [];
@@ -40,12 +44,11 @@ export default async function updateFeed(feed: IRSSFeed, replyer: IReplyer) {
         }
         acc = acc + msg + '\n\n';
       });
-      if (acc.length > 0) {
-        replies.push(acc);
-      }
+      replies.push(acc);
     }
 
     feed.lastUpdateTime = items.reduce((acc, item) => Math.max(acc, (item.date || item.meta.date!).getTime()), feed.lastUpdateTime);
-    return Promise.all(replies.map((r) => replyer.reply(r, MARKDOWN)));
+    const mode = feed.previews ? MARKDOWN : NO_PREVIEW;
+    return Promise.all(replies.map((r) => telegram.sendMessage(feed.chatId, r, mode))).then(() => feed);
   });
 }

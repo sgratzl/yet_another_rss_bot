@@ -16,12 +16,17 @@ export interface IReplyer {
 
 
 export function replyer(chatId: string | number) {
-  const telegram = new Telegram(process.env.BOT_TOKEN!);
+  const telegram = ;
 
   return telegram.sendMessage.bind(telegram, chatId);
 }
 
+
 export const MARKDOWN: ExtraReplyMessage = {
   parse_mode: 'Markdown', // eslint-disable-line @typescript-eslint/camelcase,
-  disable_web_page_preview: true // eslint-disable-line @typescript-eslint/camelcase,
 };
+
+export const NO_PREVIEW: ExtraReplyMessage = Object.assign({
+  ...MARKDOWN,
+  disable_web_page_preview: true // eslint-disable-line @typescript-eslint/camelcase,
+});
