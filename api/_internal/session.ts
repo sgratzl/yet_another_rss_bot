@@ -43,7 +43,7 @@ function getSessionKey(ctx: ContextMessageUpdate) {
 
 export default async function session<T>(ctx: ISessionContext<T>, next?: (ctx?: ISessionContext<T>) => any) {
   const key = getSessionKey(ctx) || 'all';
-  let session = await getSession<T>({key});
+  let session = Object.assign({}, await getSession<T>({key}));
   Object.defineProperty(ctx, 'session', {
     get() {
       return session;

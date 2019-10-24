@@ -28,13 +28,22 @@ bot.command('add', async (ctx) => {
     return ctx.reply('Please provide one or more RSS URLs as arguments');
   }
   const newFeeds = args.slice(0, 1).map((url) => createFeed(url, ctx));
+  if (!ctx.session.feeds) {
+    ctx.session.feeds = [];
+  }
   ctx.session.chatId = ctx.chat!.id;
   return Promise.all(newFeeds).then((feeds) => ctx.session.feeds.push(...feeds));
 });
 
 bot.command('list', (ctx) => {
+  if (!ctx.session.feeds) {
+    ctx.session.feeds = [];
+  }
+  if (!ctx.session.feeds) {
+    return ctx.reply('No feeds registered');
+  }
   return ctx.reply(`registered feeds:
-${ctx.session.feeds.map((feed) => feed.url)}`, MARKDOWN);
+${ctx.session.feeds.map((feed) => ` * ${feed.url}`).join('\n')}`, MARKDOWN);
 });
 
 bot.command('remove', async (ctx) => {
