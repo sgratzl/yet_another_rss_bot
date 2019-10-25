@@ -31,6 +31,9 @@ bot.command('add', async (ctx) => {
 bot.command('list', async (ctx) => {
   const chatId = ctx.chat!.id;
   const feeds = await getFeeds(chatId);
+  if (feeds.length === 0) {
+    return ctx.reply('No registered feeds');
+  }
   return ctx.reply(`registered feeds:
 ${feeds.map((feed) => feed.url).join('\n')}`, NO_PREVIEW);
 });
@@ -50,18 +53,26 @@ bot.command('update', async (ctx) => {
   const chatId = ctx.chat!.id;
   const feeds = await getFeeds(chatId);
 
+  if (feeds.length === 0) {
+    return ctx.reply('No registered feeds');
+  }
+
   await ctx.telegram.sendChatAction(chatId, 'typing');
   await Promise.all(
     feeds.map((feed) => updateFeed(feed, ctx.telegram)
       .then((update) => update ? saveFeed(update) : null))
   );
-  await ctx.reply(`updated feeds:
+  return ctx.reply(`updated feeds:
   ${feeds.map((feed) => feed.url).join('\n')}`, NO_PREVIEW);
 });
 
 bot.command('removeall', async (ctx) => {
   const chatId = ctx.chat!.id;
   const feeds = await getFeeds(chatId);
+
+  if (feeds.length === 0) {
+    return ctx.reply('No registered feeds');
+  }
 
   await Promise.all(feeds.map((feed) => deleteFeed(feed.chatId, feed.url)));
   return ctx.reply(`removed feeds:
