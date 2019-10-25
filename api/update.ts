@@ -9,6 +9,11 @@ export default async function handle(req: NowRequest, res: NowResponse) {
   const frequency = decodeURIComponent(req.body.frequency as string);
 
   const feeds = await getFeedsToUpdate(frequency || 'asap');
+  console.log(frequency, feeds.map((feed) => feed.url));
+
+  if (feeds.length === 0) {
+    return ok(res);
+  }
 
   const telegram = new Telegram(process.env.BOT_TOKEN!);
   await Promise.all(
