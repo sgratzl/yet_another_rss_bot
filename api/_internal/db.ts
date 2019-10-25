@@ -45,10 +45,8 @@ export function insertFeed(feed: IRSSFeed) {
 
 export function saveFeed(feed: IRSSFeed) {
   return getFeedCollection().then((c) => {
-    const update: any = {};
-    Object.keys(feed).filter((k) => !k.startsWith('_')).map((k) => {
-      update[k] = {'$set': feed[k as keyof IRSSFeed]};
-    });
-    return c.updateOne({_id: feed._id}, update);
+    const clone = {...feed};
+    delete clone._id;
+    return c.updateOne({_id: feed._id}, {'$set': clone}, {upsert: true});
   });
 }

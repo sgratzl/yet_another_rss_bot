@@ -81,7 +81,7 @@ ${feeds.map((feed) => feed.url).join('\n')}`, NO_PREVIEW);
 });
 
 const menu = new TelegrafInlineMenu('Main Menu');
-const settings = new TelegrafInlineMenu('Settings');
+const settings = new TelegrafInlineMenu('Settings').setCommand('settings');
 const feedOptions = new TelegrafInlineMenu('Feed Options');
 
 menu.submenu('settings', 's', settings);
