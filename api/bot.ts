@@ -1,10 +1,11 @@
 import {NowRequest, NowResponse} from '@now/node';
-import Telegraf from 'telegraf';
+import Telegraf, {ContextMessageUpdate} from 'telegraf';
+import TelegrafInlineMenu from 'telegraf-inline-menu';
 import {ok} from './_internal/responses';
 import {toArgs, NO_PREVIEW} from './_internal/telegram';
 import updateFeed from './_internal/updateFeed';
 import {createFeed} from './_internal/model';
-import {insertFeed, getFeeds, deleteFeed, saveFeed} from './_internal/db';
+import {insertFeed, getFeeds, deleteFeed, saveFeed, getFeed} from './_internal/db';
 // import {deregisterCallback} from './_internal/callback';
 
 // let serverUrl = '';
@@ -57,7 +58,7 @@ bot.command('update', async (ctx) => {
     return ctx.reply('No registered feeds');
   }
 
-  await ctx.telegram.sendChatAction(chatId, 'typing');
+  await ctx.replyWithChatAction('typing');
   await Promise.all(
     feeds.map((feed) => updateFeed(feed, ctx.telegram)
       .then((update) => update ? saveFeed(update) : null))
@@ -78,6 +79,47 @@ bot.command('removeall', async (ctx) => {
   return ctx.reply(`removed feeds:
 ${feeds.map((feed) => feed.url).join('\n')}`, NO_PREVIEW);
 });
+
+const menu = new TelegrafInlineMenu('Main Menu');
+const settings = new TelegrafInlineMenu('Settings');
+const feedOptions = new TelegrafInlineMenu('Feed Options');
+
+menu.submenu('settings', 's', settings);
+
+function fetchFeeds(ctx: ContextMessageUpdate) {
+  return getFeeds(ctx.chat!.id).then((feeds) => feeds.map((feed) => feed.url));
+}
+feedOptions.toggle('show Previews', 'p', {
+  setFunc: async (ctx: ContextMessageUpdate, choice) => {
+    const url = ctx.match![1];
+    const feed = await getFeed(ctx.chat!.id, url);
+    feed.previews = choice;
+    await saveFeed(feed);
+  },
+  isSetFunc: async (ctx: ContextMessageUpdate) => {
+    const url = ctx.match![1];
+    const feed = await getFeed(ctx.chat!.id, url);
+    return feed.previews;
+  }
+});
+feedOptions.select('frequency', ['asap', 'hourly', 'daily'], {
+  setFunc: async (ctx: ContextMessageUpdate, choice) => {
+    const url = ctx.match![1];
+    const feed = await getFeed(ctx.chat!.id, url);
+    feed.frequency = choice as 'asap' | 'hourly' | 'daily';
+    await saveFeed(feed);
+  },
+  isSetFunc: async (ctx: ContextMessageUpdate, choice) => {
+    const url = ctx.match![1];
+    const feed = await getFeed(ctx.chat!.id, url);
+    return feed.frequency === choice;
+  }
+});
+settings.selectSubmenu('f', fetchFeeds, feedOptions, {
+  columns: 2
+});
+
+bot.use(menu.init());
 
 export default async function handle(req: NowRequest, res: NowResponse) {
   // serverUrl = `https://${req.headers.host}/api`;
