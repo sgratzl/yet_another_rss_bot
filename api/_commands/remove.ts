@@ -14,4 +14,4 @@ export async function remove(ctx: ContextMessageUpdate) {
     return ctx.reply('Please provide one or more RSS URLs as arguments');
   }
   return deleteImpl(ctx, args);
-};
+}

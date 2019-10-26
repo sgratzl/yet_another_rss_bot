@@ -18,4 +18,4 @@ export async function update(ctx: ContextMessageUpdate) {
   );
   return ctx.reply(`updated feeds:
   ${feeds.map((feed) => feed.url).join('\n')}`, NO_PREVIEW);
-};
+}

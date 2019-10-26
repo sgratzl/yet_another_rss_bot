@@ -1,13 +1,13 @@
-import {ContextMessageUpdate} from "telegraf";
-import TelegrafInlineMenu from "telegraf-inline-menu/dist/source";
-import {getFeeds, saveFeed} from "../_internal/db";
-import {IRSSFeed} from "../_internal/model";
+import {ContextMessageUpdate} from 'telegraf';
+import TelegrafInlineMenu from 'telegraf-inline-menu/dist/source';
+import {getFeeds, saveFeed} from '../_internal/db';
+import {IRSSFeed} from '../_internal/model';
 
 
 interface IStateContext extends ContextMessageUpdate {
   state: {
     feeds: IRSSFeed[];
-  }
+  };
 }
 
 export const settingsMenu = new TelegrafInlineMenu('Settings').setCommand('settings');
@@ -26,7 +26,7 @@ feedOptions.toggle('show Previews', 'p', {
     feed.previews = choice;
     await saveFeed(feed);
   },
-  isSetFunc: async (ctx: ContextMessageUpdate) => {
+  isSetFunc: (ctx: ContextMessageUpdate) => {
     const url = ctx.match![1];
     const feed = (ctx as IStateContext).state.feeds.find((feed) => feed.url === url)!;
     return feed.previews;
@@ -39,7 +39,7 @@ feedOptions.select('frequency', ['asap', 'hourly', 'daily'], {
     feed.frequency = choice as 'asap' | 'hourly' | 'daily';
     await saveFeed(feed);
   },
-  isSetFunc: async (ctx: ContextMessageUpdate, choice) => {
+  isSetFunc: (ctx: ContextMessageUpdate, choice) => {
     const url = ctx.match![1];
     const feed = (ctx as IStateContext).state.feeds.find((feed) => feed.url === url)!;
     return feed.frequency === choice;

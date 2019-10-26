@@ -13,4 +13,4 @@ export async function removeall(ctx: ContextMessageUpdate) {
   await Promise.all(feeds.map((feed) => deleteFeed(feed.chatId, feed.url)));
   return ctx.reply(`removed feeds:
 ${feeds.map((feed) => feed.url).join('\n')}`, NO_PREVIEW);
-};
+}

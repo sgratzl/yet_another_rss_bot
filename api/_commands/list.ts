@@ -10,4 +10,4 @@ export async function list(ctx: ContextMessageUpdate) {
   }
   return ctx.reply(`registered feeds:
 ${feeds.map((feed) => feed.url).join('\n')}`, NO_PREVIEW);
-};
+}

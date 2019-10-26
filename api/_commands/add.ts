@@ -20,4 +20,4 @@ export async function add(ctx: ContextMessageUpdate) {
     return Stage.enter('adder');
   }
   return addImpl(ctx, args);
-};
+}
