@@ -10,14 +10,9 @@ function getDB() {
   return client.then((client) => client.db());
 }
 
-// function getSessionCollection() {
-//   return getDB().then((db) => db.collection('yet_another_rss_bot_session'));
-// }
-
 function getFeedCollection() {
   return getDB().then((db) => db.collection('yet_another_rss_bot_feed'));
 }
-
 
 export function getFeedsToUpdate(frequency: string): Promise<IRSSFeed[]> {
   return getFeedCollection().then((c) => c.find({frequency})).then((c) => c.toArray());
