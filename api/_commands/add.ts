@@ -24,7 +24,7 @@ addScene.on('text', async (ctx) => {
   if (!ctx.message!.text || !ctx.message!.text.startsWith('http')) {
     return leaver(ctx as any);
   }
-  const url = ctx.message!.text!;
+  const url = ctx.message!.text;
   console.log('got scene text', url);
   await addImpl(ctx, [url]);
   console.log('added');
