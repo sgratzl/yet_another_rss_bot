@@ -10,7 +10,7 @@ interface IStateContext extends ContextMessageUpdate {
   };
 }
 
-export const settingsMenu = new TelegrafInlineMenu('Settings').setCommand('settings');
+export const settingsMenu = new TelegrafInlineMenu('Change Feed Settings').setCommand('settings');
 const feedOptions = new TelegrafInlineMenu('Feed Options');
 
 function fetchFeeds(ctx: ContextMessageUpdate) {
