@@ -1,7 +1,7 @@
 import {NowRequest, NowResponse} from '@now/node';
 import Telegraf, {ContextMessageUpdate, Middleware, Stage, session} from 'telegraf';
 import TelegrafInlineMenu from 'telegraf-inline-menu';
-import {add, addScene, list, removeMenu, removeall, settingsMenu, update, preview} from './_commands';
+import {add, addScene, list, removeMenu, removeall, settingsMenu, update, preview, instantView} from './_commands';
 import {ok} from './_internal/responses';
 
 const bot = new Telegraf(process.env.BOT_TOKEN!, {
@@ -29,6 +29,7 @@ bot.command('list', list);
 bot.command('update', update);
 bot.command('removeall', removeall);
 bot.command('preview', preview);
+bot.command('instantview', instantView);
 
 export default async function handle(req: NowRequest, res: NowResponse) {
   await bot.handleUpdate(req.body);

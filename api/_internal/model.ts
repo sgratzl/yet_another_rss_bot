@@ -6,6 +6,7 @@ export interface IRSSFeed {
   chatId: number;
   url: string;
   previews: boolean;
+  instantView?: string;
 
   frequency: 'asap' | 'hourly' | 'daily';
 

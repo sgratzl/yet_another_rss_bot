@@ -13,3 +13,5 @@ export function toArgs(ctx: ContextMessageUpdate) {
 export const MARKDOWN = Extra.markdown(true) as ExtraReplyMessage;
 
 export const NO_PREVIEW = Extra.markdown(true).webPreview(false) as ExtraReplyMessage;
+
+export const hiddenCharacter = '&#8203;';

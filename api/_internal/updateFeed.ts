@@ -1,7 +1,7 @@
 import {IRSSFeed} from './model';
 import fetch from 'node-fetch';
 import FeedParser, {Item} from 'feedparser';
-import {NO_PREVIEW, MARKDOWN} from './telegram';
+import {NO_PREVIEW, MARKDOWN, hiddenCharacter} from './telegram';
 import {Telegram} from 'telegraf';
 
 export default async function updateFeed(feed: IRSSFeed, telegram: Telegram) {
@@ -10,6 +10,14 @@ export default async function updateFeed(feed: IRSSFeed, telegram: Telegram) {
     addmeta: true
   });
   const lastUpdate = new Date(feed.lastUpdateTime);
+
+  const url = (item: Item) => {
+    let t = `[${item.title}](${item.link})`;
+    if (feed.instantView) {
+      t = `${t}[${hiddenCharacter}](https://t.me/iv?rhash=${feed.instantView}&url=${encodeURIComponent(item.link)})`;
+    }
+    return t;
+  };
 
   const stream = await fetch(feed.url);
   const items = await new Promise<Item[]>((resolve, reject) => {
@@ -30,7 +38,7 @@ export default async function updateFeed(feed: IRSSFeed, telegram: Telegram) {
       return null;
     }
     items.sort((a, b) => (a.date || a.meta.date!).getTime() - (b.date || b.meta.date!).getTime());
-    const msgs = items.map((item) => `${item.meta.title}\n**[${item.title}](${item.link})**\n${item.summary || item.description || ''}`);
+    const msgs = items.map((item) => `${item.meta.title}\n**${url(item)}**\n${item.summary || item.description || ''}`);
     const replies: string[] = [];
     if (msgs.length <= 5) {
       replies.push(...msgs);

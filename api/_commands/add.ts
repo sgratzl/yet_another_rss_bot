@@ -32,7 +32,7 @@ addScene.on('text', async (ctx) => {
   console.log('left');
 });
 
-export async function add(ctx: ContextMessageUpdate) {
+export function add(ctx: ContextMessageUpdate) {
   const args = toArgs(ctx);
   if (args.length === 0) {
     return Stage.enter('adder')(ctx as any);
