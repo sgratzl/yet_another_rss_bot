@@ -30,7 +30,8 @@
     "release:minor": "release-it minor",
     "release:patch": "release-it patch",
     "release:pre": "release-it --preRelease=alpha --npm.tag=next",
-    "start": "ts-node -r dotenv/config ./api/bot.ts"
+    "start": "ts-node -r dotenv/config ./api/bot.ts",
+    "webhook": "ts-node -r dotenv/config ./api/bot.ts https://yetanotherrssbot.sgratzl.now.sh/api/bot"
   },
   "dependencies": {
     "@types/feedparser": "^2.2.3",

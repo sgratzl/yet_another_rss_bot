@@ -40,7 +40,7 @@ async function _main() {
   const lastArg = process.argv[process.argv.length - 1];
   if (lastArg.startsWith('https')) {
     await bot.telegram.setWebhook(lastArg);
-    console.log('set webhook ', lastArg);
+    console.log('set webhook', lastArg);
     return;
   }
 
