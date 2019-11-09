@@ -14,4 +14,4 @@ export const MARKDOWN = Extra.markdown(true) as ExtraReplyMessage;
 
 export const NO_PREVIEW = Extra.markdown(true).webPreview(false) as ExtraReplyMessage;
 
-export const hiddenCharacter = '&#8203;';
+export const hiddenCharacter = '\u200b';
