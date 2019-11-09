@@ -38,7 +38,10 @@ export default async function updateFeed(feed: IRSSFeed, telegram: Telegram) {
       return null;
     }
     items.sort((a, b) => (a.date || a.meta.date!).getTime() - (b.date || b.meta.date!).getTime());
-    const msgs = items.map((item) => `${item.meta.title}\n**${url(item)}**\n${item.summary || item.description || ''}`);
+    const msgs = items.map((item) => {
+      const details = feed.noDetails ? '' : `\n${item.summary || item.description || ''}`;
+      return `${item.meta.title}\n**${url(item)}**${details}`;
+    });
     const replies: string[] = [];
     if (msgs.length <= 5) {
       replies.push(...msgs);

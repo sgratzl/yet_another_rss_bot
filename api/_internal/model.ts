@@ -7,6 +7,7 @@ export interface IRSSFeed {
   url: string;
   previews: boolean;
   instantView?: string;
+  noDetails?: boolean;
 
   frequency: 'asap' | 'hourly' | 'daily';
 
