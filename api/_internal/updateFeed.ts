@@ -40,7 +40,7 @@ export default async function updateFeed(feed: IRSSFeed, telegram: Telegram) {
     items.sort((a, b) => (a.date || a.meta.date!).getTime() - (b.date || b.meta.date!).getTime());
     const msgs = items.map((item) => {
       const details = feed.noDetails ? '' : `\n${item.summary || item.description || ''}`;
-      return `${item.meta.title}\n**${url(item)}**${details}`;
+      return `${item.meta.title}\n${url(item)}${details}`;
     });
     const replies: string[] = [];
     if (msgs.length <= 5) {
@@ -53,7 +53,7 @@ export default async function updateFeed(feed: IRSSFeed, telegram: Telegram) {
           replies.push(acc);
           acc = '';
         }
-        acc = acc + msg + '\n\n';
+        acc = `${acc}${msg}\n\n`;
       });
       replies.push(acc);
     }
