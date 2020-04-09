@@ -2,6 +2,7 @@ node_modules
 *.tsbuildinfo
 /build
 /.env
-/.vscode
 /.yarn
 /.yarnrc.yml
+/.pnp.js
+/.vscode
