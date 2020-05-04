@@ -1,5 +1,5 @@
 import {NowRequest, NowResponse} from '@now/node';
-import Telegraf, {ContextMessageUpdate, Middleware, Stage, session} from 'telegraf';
+import Telegraf, {Context, Middleware, Stage, session} from 'telegraf';
 import TelegrafInlineMenu from 'telegraf-inline-menu';
 import {add, addScene, list, removeMenu, removeall, settingsMenu, update, preview, instantView} from './_commands';
 import {ok} from './_internal/responses';
@@ -22,7 +22,7 @@ menu.submenu('remove', 'r', removeMenu);
 
 bot.use(session());
 bot.use(menu.init());
-bot.use(stage.middleware() as Middleware<ContextMessageUpdate>);
+bot.use(stage.middleware() as Middleware<Context>);
 
 bot.command('add', add);
 bot.command('list', list);

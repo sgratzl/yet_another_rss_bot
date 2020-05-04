@@ -1,8 +1,8 @@
-import {ContextMessageUpdate} from 'telegraf';
+import {Context} from 'telegraf';
 import {getFeeds} from '../_internal/db';
 import {NO_PREVIEW} from '../_internal/telegram';
 
-export async function list(ctx: ContextMessageUpdate) {
+export async function list(ctx: Context) {
   const chatId = ctx.chat!.id;
   const feeds = await getFeeds(chatId);
   if (feeds.length === 0) {

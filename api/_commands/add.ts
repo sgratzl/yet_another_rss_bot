@@ -1,9 +1,9 @@
-import {ContextMessageUpdate, BaseScene, Stage} from 'telegraf';
+import {Context, BaseScene, Stage} from 'telegraf';
 import {insertFeed} from '../_internal/db';
 import {NO_PREVIEW, toArgs} from '../_internal/telegram';
 import {createFeed} from '../_internal/model';
 
-async function addImpl(ctx: ContextMessageUpdate, urls: string[]) {
+async function addImpl(ctx: Context, urls: string[]) {
   const chatId = ctx.chat!.id;
   const feeds = await Promise.all(urls.map((url) => insertFeed(createFeed(url, chatId))));
   return ctx.reply(`registered feeds:
@@ -32,7 +32,7 @@ addScene.on('text', async (ctx) => {
   console.log('left');
 });
 
-export function add(ctx: ContextMessageUpdate) {
+export function add(ctx: Context) {
   const args = toArgs(ctx);
   if (args.length === 0) {
     return Stage.enter('adder')(ctx as any);

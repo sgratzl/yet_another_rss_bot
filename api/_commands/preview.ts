@@ -1,7 +1,7 @@
-import {ContextMessageUpdate} from 'telegraf';
+import {Context} from 'telegraf';
 import {MARKDOWN} from '../_internal/telegram';
 
-export async function preview(ctx: ContextMessageUpdate) {
+export async function preview(ctx: Context) {
   const msg = ctx.message!;
   if (!msg.reply_to_message) {
     return ctx.reply('not a reply message');

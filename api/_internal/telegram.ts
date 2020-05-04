@@ -1,7 +1,7 @@
-import {ContextMessageUpdate, Extra} from 'telegraf';
+import {Context, Extra} from 'telegraf';
 import {ExtraReplyMessage} from 'telegraf/typings/telegram-types';
 
-export function toArgs(ctx: ContextMessageUpdate) {
+export function toArgs(ctx: Context) {
   const regex = /^\/([^@\s]+)@?(?:(\S+)|)\s?([\s\S]+)?$/i;
   const parts = regex.exec(ctx.message!.text!.trim());
   if (!parts) {
