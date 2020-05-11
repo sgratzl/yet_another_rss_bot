@@ -2,6 +2,7 @@ import {Context, BaseScene, Stage} from 'telegraf';
 import {insertFeed} from '../_internal/db';
 import {NO_PREVIEW, toArgs} from '../_internal/telegram';
 import {createFeed} from '../_internal/model';
+import { SceneContextMessageUpdate } from 'telegraf/typings/stage';
 
 async function addImpl(ctx: Context, urls: string[]) {
   const chatId = ctx.chat!.id;
@@ -22,20 +23,20 @@ addScene.leave((ctx) => {
 addScene.command('cancel', leaver);
 addScene.on('text', async (ctx) => {
   if (!ctx.message!.text || !ctx.message!.text.startsWith('http')) {
-    return leaver(ctx as any);
+    return ctx.scene.leave();
   }
   const url = ctx.message!.text;
   console.log('got scene text', url);
   await addImpl(ctx, [url]);
   console.log('added');
-  await Stage.leave()(ctx as any);
+  await ctx.scene.leave();
   console.log('left');
 });
 
 export function add(ctx: Context) {
   const args = toArgs(ctx);
   if (args.length === 0) {
-    return Stage.enter('adder')(ctx as any);
+    return (ctx as SceneContextMessageUpdate).scene.enter('adder');
   }
   return addImpl(ctx, args);
 }
