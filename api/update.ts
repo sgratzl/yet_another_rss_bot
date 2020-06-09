@@ -6,7 +6,7 @@ import updateFeed from './_internal/updateFeed';
 
 
 export default async function handle(req: NowRequest, res: NowResponse) {
-  const frequency = decodeURIComponent(req.body.frequency as string);
+  const frequency = decodeURIComponent((req.body ? req.body.frequency : '') as string);
 
   const feeds = await getFeedsToUpdate(frequency || 'asap');
 

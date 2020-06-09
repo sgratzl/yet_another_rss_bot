@@ -4,6 +4,10 @@ import FeedParser, {Item} from 'feedparser';
 import {NO_PREVIEW, MARKDOWN, hiddenCharacter} from './telegram';
 import {Telegram} from 'telegraf';
 
+function escape(v: string) {
+  return v.replace(/([{}[]])/gm, '\\$1');
+}
+
 export default async function updateFeed(feed: IRSSFeed, telegram: Telegram) {
   const parser = new FeedParser({
     feedurl: feed.url,
@@ -39,8 +43,8 @@ export default async function updateFeed(feed: IRSSFeed, telegram: Telegram) {
     }
     items.sort((a, b) => (a.date || a.meta.date!).getTime() - (b.date || b.meta.date!).getTime());
     const msgs = items.map((item) => {
-      const details = feed.noDetails ? '' : `\n${item.summary || item.description || ''}`;
-      return `${item.meta.title}\n${url(item)}${details}`;
+      const details = feed.noDetails ? '' : `\n${escape(item.summary || item.description || '')}`;
+      return `${escape(item.meta.title)}\n${url(item)}${details}`;
     });
     const replies: string[] = [];
     if (msgs.length <= 5) {

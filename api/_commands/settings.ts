@@ -36,12 +36,18 @@ feedOptions.select('frequency', ['asap', 'hourly', 'daily'], {
   setFunc: async (ctx: Context, choice) => {
     const url = ctx.match![1];
     const feed = (ctx as IStateContext).state.feeds.find((feed) => feed.url === url)!;
+    if (!feed) {
+      return;
+    }
     feed.frequency = choice as 'asap' | 'hourly' | 'daily';
     await saveFeed(feed);
   },
   isSetFunc: (ctx: Context, choice) => {
     const url = ctx.match![1];
     const feed = (ctx as IStateContext).state.feeds.find((feed) => feed.url === url)!;
+    if (!feed) {
+      return false;
+    }
     return feed.frequency === choice;
   }
 });
