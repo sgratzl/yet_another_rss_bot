@@ -64,6 +64,12 @@ export default async function updateFeed(feed: IRSSFeed, telegram: Telegram) {
 
     feed.lastUpdateTime = items.reduce((acc, item) => Math.max(acc, (item.date || item.meta.date!).getTime()), feed.lastUpdateTime);
     const mode = feed.previews ? MARKDOWN : NO_PREVIEW;
-    return Promise.all(replies.map((r) => telegram.sendMessage(feed.chatId, r, mode))).then(() => feed);
+    return Promise.all(replies.map((r) => {
+      const m = telegram.sendMessage(feed.chatId, r, mode);
+      if (!feed.previews) {
+        return m;
+      }
+      return m.catch(() => telegram.sendMessage(feed.chatId, r, NO_PREVIEW));
+    })).then(() => feed);
   });
 }
