@@ -18,6 +18,6 @@ function fetchFeeds(ctx: Context) {
 export const removeMenu = new TelegrafInlineMenu('Select Feed to remove').setCommand('remove');
 removeMenu.select('rem', fetchFeeds, {
   setFunc: (ctx, key) => {
-    deleteImpl(ctx, [key]);
+    void deleteImpl(ctx, [key]);
   }
 });

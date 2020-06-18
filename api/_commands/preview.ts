@@ -16,11 +16,11 @@ export function preview(ctx: Context) {
     // preview special mode
     links.forEach((link, i) => {
       if (link.url!.startsWith(instantPrefix)) {
-        resl.push(`[${i > 0 ? links[i - 1]!.url : link.url}](${link.url})`);
+        resl.push(`[${i > 0 ? links[i - 1]!.url! : link.url!}](${link.url!})`);
       }
     });
   } else {
-    resl = links.map((link) => `[${link.url}](${link.url})`);
+    resl = links.map((link) => `[${link.url!}](${link.url!})`);
   }
   return ctx.reply(resl.join('\n'), MARKDOWN);
 }

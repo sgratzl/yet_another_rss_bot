@@ -23,7 +23,7 @@ export function getFeeds(chatId: number): Promise<IRSSFeed[]> {
 }
 
 export function getFeed(chatId: number, url: string): Promise<IRSSFeed> {
-  return getFeedCollection().then((c) => c.findOne({chatId, url})!);
+  return getFeedCollection().then((c) => c.findOne<IRSSFeed>({chatId, url}) as Promise<IRSSFeed>);
 }
 
 export function deleteFeed(chatId: number, url: string) {

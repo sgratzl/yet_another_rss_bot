@@ -25,7 +25,7 @@
     "watch": "tsc --watch",
     "postbuild": "npm run test",
     "build": "npm run compile",
-    "test": "eslint -c ./.eslintrc.js api/**/*.ts",
+    "test": "eslint -c ./.eslintrc.js 'api/**/*.ts'",
     "release:major": "release-it major",
     "release:minor": "release-it minor",
     "release:patch": "release-it patch",

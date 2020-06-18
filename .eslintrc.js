@@ -24,7 +24,6 @@ module.exports = {
       accessibility: 'no-public'
     }],
     '@typescript-eslint/explicit-function-return-type': 'off',
-    '@typescript-eslint/interface-name-prefix': ['error', { prefixWithI: 'always' }],
     '@typescript-eslint/prefer-for-of': 'error',
     '@typescript-eslint/prefer-readonly': 'error',
     'quotes': 'off',
@@ -34,6 +33,9 @@ module.exports = {
     '@typescript-eslint/quotes': ['error', 'single'],
     '@typescript-eslint/restrict-plus-operands': 'error',
     'semi': 'off',
-    '@typescript-eslint/semi': ['error', 'always']
+    '@typescript-eslint/semi': ['error', 'always'],
+    '@typescript-eslint/explicit-module-boundary-types': 'off',
+    '@typescript-eslint/no-unsafe-member-access': 'off',
+    '@typescript-eslint/no-unsafe-call': 'off'
   }
 };

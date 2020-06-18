@@ -51,5 +51,5 @@ async function _main() {
 }
 
 if (require.main === module) {
-  _main();
+  void _main();
 }
