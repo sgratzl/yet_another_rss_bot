@@ -18,3 +18,4 @@ npm run build
 
 [github-actions-image]: https://github.com/sgratzl/yet_another_rss_bot/workflows/nodeci/badge.svg
 [github-actions-url]: https://github.com/sgratzl/yet_another_rss_bot/actions
+
