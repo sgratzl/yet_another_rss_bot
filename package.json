@@ -17,9 +17,6 @@
     "url": "https://github.com/sgratzl/yet_another_rss_bot/issues"
   },
   "homepage": "https://github.com/sgratzl/yet_another_rss_bot#readme",
-  "engines": {
-    "node": "10.x"
-  },
   "scripts": {
     "compile": "tsc",
     "watch": "tsc --watch",
