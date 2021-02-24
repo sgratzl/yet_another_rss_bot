@@ -1,6 +1,6 @@
-import {Context} from 'telegraf';
-import {getFeed, saveFeed} from '../_internal/db';
-import {toArgs} from '../_internal/telegram';
+import { Context } from 'telegraf';
+import { getFeed, saveFeed } from '../_internal/db';
+import { toArgs } from '../_internal/telegram';
 
 async function instantViewImpl(ctx: Context, url: string, iv?: string) {
   const chatId = ctx.chat!.id;

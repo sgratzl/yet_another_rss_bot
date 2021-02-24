@@ -4,16 +4,23 @@ on: [push]
 
 jobs:
   build:
+    if: github.actor != 'dependabot[bot]'
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
-    - uses: actions/setup-node@v1
-      with:
-        node-version: '10.x'
-    - name: npm install, build, and test
-      run: |
-        npm install
-        npm test
-        npm run build --if-present
-      env:
-        CI: true
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2.1.4
+        with:
+          node-version: '12.x'
+      - run: npm i -g yarn
+      - run: yarn set version berry
+      - run: yarn config set checksumBehavior ignore
+      - name: Cache Node.js modules
+        uses: actions/cache@v2.1.4
+        with:
+          path: ./.yarn
+          key: ${{ runner.os }}-yarn2-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn2-
+      - run: yarn install
+      - run: yarn build
+      - run: yarn test

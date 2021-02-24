@@ -1,5 +1,5 @@
-import {Context} from 'telegraf';
-import {MARKDOWN} from '../_internal/telegram';
+import { Context } from 'telegraf';
+import { MARKDOWN } from '../_internal/telegram';
 
 export function preview(ctx: Context) {
   const msg = ctx.message!;

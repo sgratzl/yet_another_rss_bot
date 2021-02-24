@@ -1,6 +1,6 @@
-import {Context} from 'telegraf';
-import {getFeeds, saveFeed} from '../_internal/db';
-import {NO_PREVIEW} from '../_internal/telegram';
+import { Context } from 'telegraf';
+import { getFeeds, saveFeed } from '../_internal/db';
+import { NO_PREVIEW } from '../_internal/telegram';
 import updateFeed from '../_internal/updateFeed';
 
 export async function update(ctx: Context) {

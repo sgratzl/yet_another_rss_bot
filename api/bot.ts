@@ -1,6 +1,6 @@
 import {NowRequest, NowResponse} from '@now/node';
-import Telegraf, {Context, Middleware, Stage, session} from 'telegraf';
-import TelegrafInlineMenu from 'telegraf-inline-menu';
+import { Telegraf, Context, Middleware } from 'telegraf';
+import { MenuMiddleware, MenuTemplate } from 'telegraf-inline-menu';
 import {add, addScene, list, removeMenu, removeall, settingsMenu, update, preview, instantView} from './_commands';
 import {ok} from './_internal/responses';
 
@@ -12,10 +12,13 @@ bot.start((ctx) => {
   return ctx.reply('This bot forwards RSS updates as chat messages');
 });
 
-const menu = new TelegrafInlineMenu('Main Menu');
-const stage = new Stage([], {ttl: 10});
+const menu = new MenuTemplate('Main Menu');
 
 stage.register(addScene);
+
+const menuMiddleware = new MenuMiddleware('/', menu);
+bot.command('start', ctx => menuMiddleware.replyToContext(ctx))
+bot.use(menuMiddleware);
 
 menu.submenu('settings', 's', settingsMenu);
 menu.submenu('remove', 'r', removeMenu);

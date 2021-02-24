@@ -35,27 +35,27 @@
   },
   "dependencies": {
     "@types/feedparser": "^2.2.3",
-    "@types/mongodb": "^3.5.22",
-    "@types/node": "^14.0.13",
-    "@types/node-fetch": "^2.5.7",
-    "@types/uuid": "^8.0.0",
+    "@types/mongodb": "^3.6.8",
+    "@types/node": "^14.14.31",
+    "@types/node-fetch": "^2.5.8",
+    "@types/uuid": "^8.3.0",
     "feedparser": "^2.2.10",
-    "mongodb": "^3.5.9",
-    "node-fetch": "^2.6.0",
-    "telegraf": "^3.38.0",
-    "telegraf-inline-menu": "^4.0.1",
-    "telegram-typings": "^4.0.0-beta",
-    "uuid": "^8.1.0"
+    "mongodb": "^3.6.4",
+    "node-fetch": "^2.6.1",
+    "telegraf": "^4.1.0",
+    "telegraf-inline-menu": "^6.2.0",
+    "telegram-typings": "^5.0.0",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@now/node": "^1.7.1",
-    "@typescript-eslint/eslint-plugin": "^3.3.0",
-    "@typescript-eslint/parser": "^3.3.0",
-    "@yarnpkg/pnpify": "^2.0.0-rc.25",
+    "@typescript-eslint/eslint-plugin": "^4.15.2",
+    "@typescript-eslint/parser": "^4.15.2",
+    "@yarnpkg/pnpify": "^2.4.0",
     "dotenv": "^8.2.0",
-    "eslint": "^7.2.0",
+    "eslint": "^7.20.0",
     "now": "^19.1.1",
-    "ts-node": "^8.10.2",
-    "typescript": "^3.9.5"
+    "ts-node": "^9.1.1",
+    "typescript": "~4.1.0"
   }
 }

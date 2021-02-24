@@ -1,6 +1,6 @@
-import {Context} from 'telegraf';
-import {deleteFeed, getFeeds} from '../_internal/db';
-import {NO_PREVIEW} from '../_internal/telegram';
+import { Context } from 'telegraf';
+import { deleteFeed, getFeeds } from '../_internal/db';
+import { NO_PREVIEW } from '../_internal/telegram';
 
 export async function removeall(ctx: Context) {
   const chatId = ctx.chat!.id;
