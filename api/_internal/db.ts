@@ -1,5 +1,5 @@
 import { connect } from 'mongodb';
-import { IRSSFeed } from './model';
+import type { IRSSFeed } from './model';
 
 function getDB() {
   const client = connect(process.env.MONGODB_URL!, {

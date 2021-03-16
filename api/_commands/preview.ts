@@ -1,5 +1,5 @@
-import { Context } from 'telegraf';
-import { Message, MessageEntity } from 'typegram';
+import type { Context } from 'telegraf';
+import type { Message, MessageEntity } from 'typegram';
 import { MARKDOWN } from '../_internal/telegram';
 
 export function preview(ctx: Context & { message: Message.TextMessage }) {

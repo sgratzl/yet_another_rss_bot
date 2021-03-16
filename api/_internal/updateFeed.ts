@@ -1,8 +1,8 @@
-import { IRSSFeed } from './model';
+import type { IRSSFeed } from './model';
 import fetch from 'node-fetch';
 import FeedParser, { Item } from 'feedparser';
 import { NO_PREVIEW, MARKDOWN, hiddenCharacter } from './telegram';
-import { Telegram } from 'telegraf';
+import type { Telegram } from 'telegraf';
 
 function escape(v: string) {
   return v.replace(/([{}[]])/gm, '\\$1');

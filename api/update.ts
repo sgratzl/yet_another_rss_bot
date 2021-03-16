@@ -1,4 +1,4 @@
-import { VercelRequest, VercelResponse } from '@vercel/node';
+import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { Telegram } from 'telegraf';
 import { saveFeed, getFeedsToUpdate } from './_internal/db';
 import { ok } from './_internal/responses';

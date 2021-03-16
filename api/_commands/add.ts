@@ -1,4 +1,4 @@
-import { Context } from 'telegraf';
+import type { Context } from 'telegraf';
 import { insertFeed } from '../_internal/db';
 import { NO_PREVIEW, toArgs } from '../_internal/telegram';
 import { createFeed } from '../_internal/model';

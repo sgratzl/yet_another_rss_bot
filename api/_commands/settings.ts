@@ -1,6 +1,6 @@
-import { Context } from 'telegraf';
+import type { Context } from 'telegraf';
 import {getFeeds, saveFeed} from '../_internal/db';
-import {IRSSFeed} from '../_internal/model';
+import type {IRSSFeed} from '../_internal/model';
 import { MenuTemplate } from 'telegraf-inline-menu';
 
 

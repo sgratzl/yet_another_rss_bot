@@ -1,4 +1,4 @@
-import { ObjectID } from 'mongodb';
+import type { ObjectID } from 'mongodb';
 
 export interface IRSSFeed {
   _id?: ObjectID;

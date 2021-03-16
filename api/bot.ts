@@ -1,4 +1,4 @@
-import { VercelRequest, VercelResponse } from '@vercel/node';
+import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { Context, Telegraf } from 'telegraf';
 import { MenuMiddleware, MenuTemplate } from 'telegraf-inline-menu';
 import { add, list, removeMenu, removeAll, settingsMenu, update, preview, instantView } from './_commands';
