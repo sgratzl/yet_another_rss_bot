@@ -1,7 +1,7 @@
 {
   "hooks": {
-    "before:init": "npm test",
-    "before:release": "npm run build",
+    "before:init": "yarn test",
+    "before:release": "yarn run build",
     "after:release": "echo Successfully released ${name} v${version} to ${repo.repository}."
   },
   "git": {

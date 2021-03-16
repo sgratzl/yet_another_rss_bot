@@ -1,5 +1,5 @@
-import {connect} from 'mongodb';
-import {IRSSFeed} from './model';
+import { connect } from 'mongodb';
+import { IRSSFeed } from './model';
 
 function getDB() {
   const client = connect(process.env.MONGODB_URL!, {
@@ -15,23 +15,23 @@ function getFeedCollection() {
 }
 
 export function getFeedsToUpdate(frequency: string): Promise<IRSSFeed[]> {
-  return getFeedCollection().then((c) => c.find({frequency})).then((c) => c.toArray());
+  return getFeedCollection().then((c) => c.find({ frequency })).then((c) => c.toArray());
 }
 
 export function getFeeds(chatId: number): Promise<IRSSFeed[]> {
-  return getFeedCollection().then((c) => c.find({chatId})).then((c) => c.toArray());
+  return getFeedCollection().then((c) => c.find({ chatId })).then((c) => c.toArray());
 }
 
 export function getFeed(chatId: number, url: string): Promise<IRSSFeed> {
-  return getFeedCollection().then((c) => c.findOne<IRSSFeed>({chatId, url}) as Promise<IRSSFeed>);
+  return getFeedCollection().then((c) => c.findOne<IRSSFeed>({ chatId, url }) as Promise<IRSSFeed>);
 }
 
 export function deleteFeed(chatId: number, url: string) {
-  return getFeedCollection().then((c) => c.deleteOne({chatId, url}));
+  return getFeedCollection().then((c) => c.deleteOne({ chatId, url }));
 }
 
 export function deleteAllFeeds(chatId: number) {
-  return getFeedCollection().then((c) => c.deleteMany({chatId}));
+  return getFeedCollection().then((c) => c.deleteMany({ chatId }));
 }
 
 export function insertFeed(feed: IRSSFeed) {
@@ -40,8 +40,8 @@ export function insertFeed(feed: IRSSFeed) {
 
 export function saveFeed(feed: IRSSFeed) {
   return getFeedCollection().then((c) => {
-    const clone = {...feed};
+    const clone = { ...feed };
     delete clone._id;
-    return c.updateOne({_id: feed._id}, {'$set': clone}, {upsert: true});
+    return c.updateOne({ _id: feed._id }, { '$set': clone }, { upsert: true });
   });
 }

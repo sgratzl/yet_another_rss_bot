@@ -1,43 +1,41 @@
-import {NowRequest, NowResponse} from '@now/node';
-import Telegraf, {Context, Middleware, Stage, session} from 'telegraf';
-import TelegrafInlineMenu from 'telegraf-inline-menu';
-import {add, addScene, list, removeMenu, removeall, settingsMenu, update, preview, instantView} from './_commands';
-import {ok} from './_internal/responses';
+import { VercelRequest, VercelResponse } from '@vercel/node';
+import { Context, Telegraf } from 'telegraf';
+import { MenuMiddleware, MenuTemplate } from 'telegraf-inline-menu';
+import { add, list, removeMenu, removeAll, settingsMenu, update, preview, instantView } from './_commands';
+import { ok } from './_internal/responses';
 
-const bot = new Telegraf(process.env.BOT_TOKEN!, {
-  username: 'yet_another_rss_bot'
-});
+const bot = new Telegraf(process.env.BOT_TOKEN!);
 
 bot.start((ctx) => {
   return ctx.reply('This bot forwards RSS updates as chat messages');
 });
 
-const menu = new TelegrafInlineMenu('Main Menu');
-const stage = new Stage([], {ttl: 10});
+const menu = new MenuTemplate<Context>('Main Menu');
 
-stage.register(addScene);
+const menuMiddleware = new MenuMiddleware('/', menu);
+bot.command('start', ctx => menuMiddleware.replyToContext(ctx));
+bot.use(menuMiddleware);
 
 menu.submenu('settings', 's', settingsMenu);
 menu.submenu('remove', 'r', removeMenu);
 
-bot.use(session());
-bot.use(menu.init());
-bot.use(stage.middleware() as Middleware<Context>);
-
 bot.command('add', add);
 bot.command('list', list);
 bot.command('update', update);
-bot.command('removeall', removeall);
+bot.command('removeall', removeAll);
 bot.command('preview', preview);
 bot.command('instantview', instantView);
 
-export default async function handle(req: NowRequest, res: NowResponse) {
+export default async function handle(req: VercelRequest, res: VercelResponse) {
   await bot.handleUpdate(req.body);
 
   return ok(res);
 }
 
 async function _main() {
+  // Enable graceful stop
+  process.once('SIGINT', () => bot.stop('SIGINT'));
+  process.once('SIGTERM', () => bot.stop('SIGTERM'));
   const lastArg = process.argv[process.argv.length - 1];
   if (lastArg.startsWith('https')) {
     await bot.telegram.setWebhook(lastArg);
@@ -47,7 +45,7 @@ async function _main() {
 
   console.log('start bot');
   await bot.telegram.deleteWebhook();
-  bot.startPolling();
+  await bot.launch();
 }
 
 if (require.main === module) {
