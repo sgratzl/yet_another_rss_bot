@@ -15,9 +15,11 @@ function fetchFeeds(ctx: Context) {
   });
 }
 
-export const removeMenu = new MenuTemplate('Select Feed to remove');
+export const removeMenu = new MenuTemplate<Context>('Select Feed to remove');
 removeMenu.select('rem', fetchFeeds, {
-  setFunc: (ctx, key) => {
-    void deleteImpl(ctx, [key]);
+  isSet: () => false,
+  set: async (ctx, key) => {
+    await deleteImpl(ctx, [key]);
+    return true;
   }
 });

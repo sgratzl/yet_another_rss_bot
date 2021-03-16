@@ -4,48 +4,50 @@ import {IRSSFeed} from '../_internal/model';
 import { MenuTemplate } from 'telegraf-inline-menu';
 
 
-interface IStateContext extends Context {
+export interface MenuTemplateContext extends Context {
+  readonly match?: RegExpExecArray;
   state: {
-    feeds: IRSSFeed[];
+    feeds?: IRSSFeed[];
   };
 }
 
-export const settingsMenu = new MenuTemplate('Change Feed Settings');
-// .setCommand('settings');
-const feedOptions = new MenuTemplate('Feed Options');
+export const settingsMenu = new MenuTemplate<MenuTemplateContext>('Change Feed Settings');
+const feedOptions = new MenuTemplate<MenuTemplateContext>('Feed Options');
 
 function fetchFeeds(ctx: Context) {
   return getFeeds(ctx.chat!.id).then((feeds) => {
-    (ctx as IStateContext).state.feeds = feeds;
+    ctx.state.feeds = feeds;
     return feeds.map((feed) => feed.url);
   });
 }
 feedOptions.toggle('show Previews', 'p', {
   set: async (ctx, choice) => {
     const url = ctx.match![1];
-    const feed = (ctx as IStateContext).state.feeds.find((feed) => feed.url === url)!;
+    const feed = ctx.state.feeds!.find((feed) => feed.url === url)!;
     feed.previews = choice;
     await saveFeed(feed);
+    return true;
   },
   isSet: (ctx) => {
     const url = ctx.match![1];
-    const feed = (ctx as IStateContext).state.feeds.find((feed) => feed.url === url)!;
+    const feed = ctx.state.feeds!.find((feed) => feed.url === url)!;
     return feed.previews;
   }
 });
 feedOptions.select('frequency', ['asap', 'hourly', 'daily'], {
   set: async (ctx, choice) => {
     const url = ctx.match![1];
-    const feed = (ctx as IStateContext).state.feeds.find((feed) => feed.url === url)!;
+    const feed = ctx.state.feeds!.find((feed) => feed.url === url)!;
     if (!feed) {
-      return;
+      return false;
     }
     feed.frequency = choice as 'asap' | 'hourly' | 'daily';
     await saveFeed(feed);
+    return true;
   },
   isSet: (ctx, choice) => {
     const url = ctx.match![1];
-    const feed = (ctx as IStateContext).state.feeds.find((feed) => feed.url === url)!;
+    const feed = ctx.state.feeds!.find((feed) => feed.url === url)!;
     if (!feed) {
       return false;
     }
@@ -53,6 +55,6 @@ feedOptions.select('frequency', ['asap', 'hourly', 'daily'], {
   }
 });
 
-settingsMenu.listSubmenus('f', fetchFeeds, feedOptions, {
+settingsMenu.chooseIntoSubmenu('f', fetchFeeds, feedOptions, {
   columns: 2
 });

@@ -1,7 +1,7 @@
-import { NowRequest, NowResponse } from '@vercel/node';
-import { Telegraf } from 'telegraf';
+import { VercelRequest, VercelResponse } from '@vercel/node';
+import { Context, Telegraf } from 'telegraf';
 import { MenuMiddleware, MenuTemplate } from 'telegraf-inline-menu';
-import { add, list, removeMenu, removeall, settingsMenu, update, preview, instantView } from './_commands';
+import { add, list, removeMenu, removeAll, settingsMenu, update, preview, instantView } from './_commands';
 import { ok } from './_internal/responses';
 
 const bot = new Telegraf(process.env.BOT_TOKEN!);
@@ -10,7 +10,7 @@ bot.start((ctx) => {
   return ctx.reply('This bot forwards RSS updates as chat messages');
 });
 
-const menu = new MenuTemplate('Main Menu');
+const menu = new MenuTemplate<Context>('Main Menu');
 
 const menuMiddleware = new MenuMiddleware('/', menu);
 bot.command('start', ctx => menuMiddleware.replyToContext(ctx));
@@ -22,17 +22,20 @@ menu.submenu('remove', 'r', removeMenu);
 bot.command('add', add);
 bot.command('list', list);
 bot.command('update', update);
-bot.command('removeall', removeall);
+bot.command('removeall', removeAll);
 bot.command('preview', preview);
 bot.command('instantview', instantView);
 
-export default async function handle(req: NowRequest, res: NowResponse) {
+export default async function handle(req: VercelRequest, res: VercelResponse) {
   await bot.handleUpdate(req.body);
 
   return ok(res);
 }
 
 async function _main() {
+  // Enable graceful stop
+  process.once('SIGINT', () => bot.stop('SIGINT'));
+  process.once('SIGTERM', () => bot.stop('SIGTERM'));
   const lastArg = process.argv[process.argv.length - 1];
   if (lastArg.startsWith('https')) {
     await bot.telegram.setWebhook(lastArg);
@@ -42,7 +45,7 @@ async function _main() {
 
   console.log('start bot');
   await bot.telegram.deleteWebhook();
-  bot.start();
+  await bot.launch();
 }
 
 if (require.main === module) {

@@ -3148,7 +3148,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typegram@npm:^3.2.0":
+"typegram@npm:^3.2.0, typegram@npm:^3.2.2":
   version: 3.2.2
   resolution: "typegram@npm:3.2.2"
   checksum: 280d5b29bde9d839a4c6d6a0afad2ecb3c91ed8eaa2d86fe2bafda2079c31a438d34f329d05b71cb8dd6a7956382be20d55e6569932e06e100b58fb372057505
@@ -3365,6 +3365,7 @@ typescript@~4.2.3:
     telegraf-inline-menu: ^6.2.0
     telegram-typings: ^5.0.0
     ts-node: ^9.1.1
+    typegram: ^3.2.2
     typescript: ~4.2.3
     uuid: ^8.3.2
     vercel: ^21.3.3
