@@ -2,7 +2,6 @@ import { Context } from 'telegraf';
 import { insertFeed } from '../_internal/db';
 import { NO_PREVIEW, toArgs } from '../_internal/telegram';
 import { createFeed } from '../_internal/model';
-import { SceneContextMessageUpdate } from 'telegraf/typings/stage';
 
 async function addImpl(ctx: Context, urls: string[]) {
   const chatId = ctx.chat!.id;

@@ -1,5 +1,5 @@
-import {Context, Extra} from 'telegraf';
-import {ExtraReplyMessage} from 'telegraf/typings/telegram-types';
+import { Context } from 'telegraf';
+import { ExtraReplyMessage } from 'telegraf/typings/telegram-types';
 
 export function toArgs(ctx: Context) {
   const regex = /^\/([^@\s]+)@?(?:(\S+)|)\s?([\s\S]+)?$/i;
@@ -10,8 +10,13 @@ export function toArgs(ctx: Context) {
   return !parts[3] ? [] : parts[3].split(/\s+/).filter((arg) => arg.length);
 }
 
-export const MARKDOWN = Extra.markdown(true) as ExtraReplyMessage;
+export const MARKDOWN: ExtraReplyMessage = {
+  parse_mode: 'MarkdownV2'
+};
 
-export const NO_PREVIEW = Extra.markdown(true).webPreview(false) as ExtraReplyMessage;
+export const NO_PREVIEW: ExtraReplyMessage = {
+  disable_web_page_preview: true,
+  parse_mode: 'MarkdownV2'
+};
 
 export const hiddenCharacter = '\u200b';

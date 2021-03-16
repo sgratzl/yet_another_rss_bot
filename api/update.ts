@@ -1,7 +1,7 @@
-import {NowRequest, NowResponse} from '@now/node';
-import {Telegram} from 'telegraf';
-import {saveFeed, getFeedsToUpdate} from './_internal/db';
-import {ok} from './_internal/responses';
+import { NowRequest, NowResponse } from '@vercel/node';
+import { Telegram } from 'telegraf';
+import { saveFeed, getFeedsToUpdate } from './_internal/db';
+import { ok } from './_internal/responses';
 import updateFeed from './_internal/updateFeed';
 
 

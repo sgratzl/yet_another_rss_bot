@@ -1,7 +1,7 @@
 import { Context } from 'telegraf';
+import { MenuTemplate } from 'telegraf-inline-menu';
 import { deleteFeed, getFeeds } from '../_internal/db';
 import { NO_PREVIEW } from '../_internal/telegram';
-import TelegrafInlineMenu from 'telegraf-inline-menu/dist/source';
 
 async function deleteImpl(ctx: Context, urls: string[]) {
   const chatId = ctx.chat!.id;
@@ -15,7 +15,7 @@ function fetchFeeds(ctx: Context) {
   });
 }
 
-export const removeMenu = new TelegrafInlineMenu('Select Feed to remove').setCommand('remove');
+export const removeMenu = new MenuTemplate('Select Feed to remove');
 removeMenu.select('rem', fetchFeeds, {
   setFunc: (ctx, key) => {
     void deleteImpl(ctx, [key]);

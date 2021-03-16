@@ -1,12 +1,10 @@
-import {NowRequest, NowResponse} from '@now/node';
-import { Telegraf, Context, Middleware } from 'telegraf';
+import { NowRequest, NowResponse } from '@vercel/node';
+import { Telegraf } from 'telegraf';
 import { MenuMiddleware, MenuTemplate } from 'telegraf-inline-menu';
-import {add, addScene, list, removeMenu, removeall, settingsMenu, update, preview, instantView} from './_commands';
-import {ok} from './_internal/responses';
+import { add, list, removeMenu, removeall, settingsMenu, update, preview, instantView } from './_commands';
+import { ok } from './_internal/responses';
 
-const bot = new Telegraf(process.env.BOT_TOKEN!, {
-  username: 'yet_another_rss_bot'
-});
+const bot = new Telegraf(process.env.BOT_TOKEN!);
 
 bot.start((ctx) => {
   return ctx.reply('This bot forwards RSS updates as chat messages');
@@ -14,18 +12,12 @@ bot.start((ctx) => {
 
 const menu = new MenuTemplate('Main Menu');
 
-stage.register(addScene);
-
 const menuMiddleware = new MenuMiddleware('/', menu);
-bot.command('start', ctx => menuMiddleware.replyToContext(ctx))
+bot.command('start', ctx => menuMiddleware.replyToContext(ctx));
 bot.use(menuMiddleware);
 
 menu.submenu('settings', 's', settingsMenu);
 menu.submenu('remove', 'r', removeMenu);
-
-bot.use(session());
-bot.use(menu.init());
-bot.use(stage.middleware() as Middleware<Context>);
 
 bot.command('add', add);
 bot.command('list', list);
@@ -50,7 +42,7 @@ async function _main() {
 
   console.log('start bot');
   await bot.telegram.deleteWebhook();
-  bot.startPolling();
+  bot.start();
 }
 
 if (require.main === module) {
