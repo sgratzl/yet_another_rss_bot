@@ -1,4 +1,4 @@
-import { Context } from 'telegraf';
+import type { Context } from 'telegraf';
 import { getFeed, saveFeed } from '../_internal/db';
 import { toArgs } from '../_internal/telegram';
 

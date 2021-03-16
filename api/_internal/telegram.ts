@@ -18,4 +18,5 @@ export const NO_PREVIEW: ExtraReplyMessage = {
   parse_mode: 'MarkdownV2'
 };
 
-export const hiddenCharacter = '\u200b';
+// export const hiddenCharacter = '\u200b';
+export const hiddenCharacter = 'Preview';
