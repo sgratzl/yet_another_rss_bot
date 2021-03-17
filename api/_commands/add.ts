@@ -1,12 +1,12 @@
 import type { Context } from 'telegraf';
 import { insertFeed } from '../_internal/db';
-import { NO_PREVIEW, toArgs } from '../_internal/telegram';
+import { NO_PREVIEW_HTML, toArgs } from '../_internal/telegram';
 import { createFeed } from '../_internal/model';
 
 export async function addImpl(ctx: Context, url: string) {
   const chatId = ctx.chat!.id;
   const feed = await insertFeed(createFeed(url, chatId));
-  return ctx.reply(`registered feed: ${feed.url}`, NO_PREVIEW);
+  return ctx.reply(`registered feed: ${feed.url}`, NO_PREVIEW_HTML);
 }
 
 export function add(ctx: Context & { message: { text: string } }) {

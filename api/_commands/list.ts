@@ -1,6 +1,6 @@
 import type { Context } from 'telegraf';
 import { getFeeds } from '../_internal/db';
-import { NO_PREVIEW } from '../_internal/telegram';
+import { NO_PREVIEW_HTML } from '../_internal/telegram';
 
 export async function list(ctx: Context) {
   const chatId = ctx.chat!.id;
@@ -9,5 +9,5 @@ export async function list(ctx: Context) {
     return ctx.reply('No registered feeds');
   }
   return ctx.reply(`registered feeds:
-${feeds.map((feed) => feed.url).join('\n')}`, NO_PREVIEW);
+${feeds.map((feed) => feed.url).join('\n')}`, NO_PREVIEW_HTML);
 }

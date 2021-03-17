@@ -1,6 +1,6 @@
 import type { Context } from 'telegraf';
 import type { Message, MessageEntity } from 'typegram';
-import { MARKDOWN } from '../_internal/telegram';
+import { HTML } from '../_internal/telegram';
 
 export function preview(ctx: Context & { message: Message.TextMessage }) {
   const msg = ctx.message;
@@ -21,7 +21,7 @@ export function preview(ctx: Context & { message: Message.TextMessage }) {
       }
     });
   } else {
-    resl = links.map((link) => `[${link.url}](${link.url})`);
+    resl = links.map((link) => `<a href="${link.url}">${link.url}</a>`);
   }
-  return ctx.reply(resl.join('\n'), MARKDOWN);
+  return ctx.reply(resl.join('<br>'), HTML);
 }

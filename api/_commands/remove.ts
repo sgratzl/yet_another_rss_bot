@@ -1,12 +1,12 @@
 import type { Context } from 'telegraf';
 import { MenuTemplate } from 'telegraf-inline-menu';
 import { deleteFeed, getFeeds } from '../_internal/db';
-import { NO_PREVIEW } from '../_internal/telegram';
+import { NO_PREVIEW_HTML } from '../_internal/telegram';
 
 async function deleteImpl(ctx: Context, urls: string[]) {
   const chatId = ctx.chat!.id;
   await Promise.all(urls.map((url) => deleteFeed(chatId, url)));
-  return ctx.reply(`removed feeds:\n${urls.join('\n')}`, NO_PREVIEW);
+  return ctx.reply(`removed feeds:<br>${urls.join('<br>')}`, NO_PREVIEW_HTML);
 }
 
 function fetchFeeds(ctx: Context) {

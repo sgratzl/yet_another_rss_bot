@@ -9,14 +9,14 @@ export function toArgs(text: string) {
   return !parts[3] ? [] : parts[3].split(/\s+/).filter((arg) => arg.length);
 }
 
-export const MARKDOWN: ExtraReplyMessage = {
-  parse_mode: 'MarkdownV2'
+export const HTML: ExtraReplyMessage = {
+  parse_mode: 'HTML'
 };
 
-export const NO_PREVIEW: ExtraReplyMessage = {
+export const NO_PREVIEW_HTML: ExtraReplyMessage = {
   disable_web_page_preview: true,
-  parse_mode: 'MarkdownV2'
+  parse_mode: 'HTML'
 };
 
-// export const hiddenCharacter = '\u200b';
-export const hiddenCharacter = 'Preview';
+export const hiddenCharacter = '\u200b';
+// export const hiddenCharacter = 'Preview';

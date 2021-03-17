@@ -1,8 +1,7 @@
 import type { Context } from 'telegraf';
 import { getFeeds, saveFeed } from '../_internal/db';
-import { NO_PREVIEW } from '../_internal/telegram';
+import { NO_PREVIEW_HTML } from '../_internal/telegram';
 import updateFeed from '../_internal/updateFeed';
-import { escapeMarkDown } from '../_internal/utils';
 
 
 export async function update(ctx: Context) {
@@ -19,5 +18,5 @@ export async function update(ctx: Context) {
       .then((update) => update ? saveFeed(update) : null))
   );
   return ctx.reply(`updated feeds:
-  ${feeds.map((feed) => `[${escapeMarkDown(feed.url)}](${feed.url})`).join('\n')}`, NO_PREVIEW);
+  ${feeds.map((feed) => `<a href="${feed.url}">${feed.url}</a>`).join('<br>')}`, NO_PREVIEW_HTML);
 }
