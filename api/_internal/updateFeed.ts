@@ -4,8 +4,8 @@ import FeedParser, { Item } from 'feedparser';
 import { NO_PREVIEW, MARKDOWN, hiddenCharacter } from './telegram';
 import type { Telegram } from 'telegraf';
 
-function escape(v: string) {
-  return v.replace(/([{}[]])/gm, '\\$1');
+export function escapeMarkDown(v: string) {
+  return v.replace(/([{}[]._*])/gm, '\\$1');
 }
 
 export default async function updateFeed(feed: IRSSFeed, telegram: Telegram) {
@@ -16,7 +16,7 @@ export default async function updateFeed(feed: IRSSFeed, telegram: Telegram) {
   const lastUpdate = new Date(feed.lastUpdateTime);
 
   const url = (item: Item) => {
-    let t = `[${item.title}](${item.link})`;
+    let t = `[${escapeMarkDown(item.title)}](${item.link})`;
     if (feed.instantView) {
       t = `${t}[${hiddenCharacter}](https://t.me/iv?rhash=${feed.instantView}&url=${encodeURIComponent(item.link)})`;
     }
@@ -43,8 +43,8 @@ export default async function updateFeed(feed: IRSSFeed, telegram: Telegram) {
     }
     items.sort((a, b) => (a.date || a.meta.date!).getTime() - (b.date || b.meta.date!).getTime());
     const msgs = items.map((item) => {
-      const details = feed.noDetails ? '' : `\n${escape(item.summary || item.description || '')}`;
-      return `${escape(item.meta.title)}\n${url(item)}${details}`;
+      const details = feed.noDetails ? '' : `\n${escapeMarkDown(item.summary || item.description || '')}`;
+      return `${escapeMarkDown(item.meta.title)}\n${url(item)}${details}`;
     });
     const replies: string[] = [];
     if (msgs.length <= 5) {

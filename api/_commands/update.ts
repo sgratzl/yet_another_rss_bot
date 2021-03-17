@@ -3,6 +3,9 @@ import { getFeeds, saveFeed } from '../_internal/db';
 import { NO_PREVIEW } from '../_internal/telegram';
 import updateFeed from '../_internal/updateFeed';
 
+export function escapeMarkDown(v: string) {
+  return v.replace(/([{}[]._*])/gm, '\\$1');
+}
 export async function update(ctx: Context) {
   const chatId = ctx.chat!.id;
   const feeds = await getFeeds(chatId);
@@ -17,5 +20,5 @@ export async function update(ctx: Context) {
       .then((update) => update ? saveFeed(update) : null))
   );
   return ctx.reply(`updated feeds:
-  ${feeds.map((feed) => feed.url).join('\n')}`, NO_PREVIEW);
+  ${feeds.map((feed) => `[${escapeMarkDown(feed.url)}](${feed.url})`).join('\n')}`, NO_PREVIEW);
 }
