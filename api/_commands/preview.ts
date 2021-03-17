@@ -23,5 +23,5 @@ export function preview(ctx: Context & { message: Message.TextMessage }) {
   } else {
     resl = links.map((link) => `<a href="${link.url}">${link.url}</a>`);
   }
-  return ctx.reply(resl.join('<br>'), HTML);
+  return ctx.reply(resl.join('\n\n'), HTML);
 }
