@@ -2,10 +2,9 @@ import type { Context } from 'telegraf';
 import { getFeeds, saveFeed } from '../_internal/db';
 import { NO_PREVIEW } from '../_internal/telegram';
 import updateFeed from '../_internal/updateFeed';
+import { escapeMarkDown } from '../_internal/utils';
 
-export function escapeMarkDown(v: string) {
-  return v.replace(/([{}[]._*])/gm, '\\$1');
-}
+
 export async function update(ctx: Context) {
   const chatId = ctx.chat!.id;
   const feeds = await getFeeds(chatId);

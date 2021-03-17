@@ -3,10 +3,7 @@ import fetch from 'node-fetch';
 import FeedParser, { Item } from 'feedparser';
 import { NO_PREVIEW, MARKDOWN, hiddenCharacter } from './telegram';
 import type { Telegram } from 'telegraf';
-
-export function escapeMarkDown(v: string) {
-  return v.replace(/([{}[]._*])/gm, '\\$1');
-}
+import { escapeMarkDown } from './utils';
 
 export default async function updateFeed(feed: IRSSFeed, telegram: Telegram) {
   const parser = new FeedParser({
