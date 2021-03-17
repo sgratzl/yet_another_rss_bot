@@ -6,7 +6,7 @@ import { NO_PREVIEW_HTML } from '../_internal/telegram';
 async function deleteImpl(ctx: Context, urls: string[]) {
   const chatId = ctx.chat!.id;
   await Promise.all(urls.map((url) => deleteFeed(chatId, url)));
-  return ctx.reply(`removed feeds:\n\n${urls.join('\n\n')}`, NO_PREVIEW_HTML);
+  return ctx.reply(`removed feeds:\n${urls.join('\n')}`, NO_PREVIEW_HTML);
 }
 
 function fetchFeeds(ctx: Context) {

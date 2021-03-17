@@ -17,11 +17,11 @@ export function preview(ctx: Context & { message: Message.TextMessage }) {
     // preview special mode
     links.forEach((link, i) => {
       if (link.url.startsWith(instantPrefix)) {
-        resl.push(`[${i > 0 ? links[i - 1]!.url : link.url}](${link.url})`);
+        resl.push(`<a href="${link.url}">${i > 0 ? links[i - 1]!.url : link.url}</a>`);
       }
     });
   } else {
     resl = links.map((link) => `<a href="${link.url}">${link.url}</a>`);
   }
-  return ctx.reply(resl.join('\n\n'), HTML);
+  return ctx.reply(resl.join('\n'), HTML);
 }

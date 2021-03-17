@@ -18,5 +18,5 @@ export async function update(ctx: Context) {
       .then((update) => update ? saveFeed(update) : null))
   );
   return ctx.reply(`updated feeds:
-  ${feeds.map((feed) => `<a href="${feed.url}">${feed.url}</a>`).join('\n\n')}`, NO_PREVIEW_HTML);
+  ${feeds.map((feed) => `<a href="${feed.url}">${feed.url}</a>`).join('\n')}`, NO_PREVIEW_HTML);
 }
