@@ -21,7 +21,7 @@
     "compile": "tsc",
     "watch": "tsc --watch",
     "postbuild": "yarn run test",
-    "build": "yarn run compile",
+    "build": "node out.js",
     "test": "eslint \"api/**/*.ts\"",
     "release": "release-it --disable-metrics --npm.skipChecks",
     "release:pre": "release-it --disable-metrics --npm.skipChecks --preRelease=alpha --npm.tag=next",

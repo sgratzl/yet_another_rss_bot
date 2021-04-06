@@ -4,7 +4,6 @@ import { MenuMiddleware, MenuTemplate } from 'telegraf-inline-menu';
 import { add, list, removeMenu, removeAll, settingsMenu, update, preview, instantView } from './_commands';
 import { ok } from './_internal/responses';
 
-console.log(process.env);
 const bot = new Telegraf(process.env.BOT_TOKEN!);
 
 bot.start((ctx) => {
