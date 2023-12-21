@@ -35,7 +35,7 @@
     "@types/uuid": "^9.0.7",
     "feedparser": "^2.2.10",
     "mongodb": "^6.3.0",
-    "node-fetch": "^3.3.2",
+    "node-fetch": "^2.7.0",
     "sanitize-html": "^2.11.0",
     "telegraf": "4.15.3",
     "telegraf-inline-menu": "^6.2.1",
