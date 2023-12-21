@@ -15,7 +15,7 @@ export async function update(ctx: Context) {
   await ctx.replyWithChatAction('typing');
   await Promise.all(
     feeds.map((feed) => updateFeed(feed, ctx.telegram)
-      .then((update) => update ? saveFeed(update) : null))
+      .then((u) => u ? saveFeed(u) : null))
   );
   return ctx.reply(`updated feeds:
   ${feeds.map((feed) => `<a href="${feed.url}">${feed.url}</a>`).join('\n')}`, NO_PREVIEW_HTML);

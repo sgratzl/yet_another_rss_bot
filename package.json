@@ -29,31 +29,30 @@
     "webhook": "node -r dotenv/config ./build/bot https://yetanotherrssbot.vercel.app/api/bot"
   },
   "dependencies": {
-    "@types/feedparser": "^2.2.3",
-    "@types/mongodb": "^3.6.12",
-    "@types/node": "^14.14.41",
-    "@types/node-fetch": "^2.5.10",
-    "@types/sanitize-html": "^2.3.0",
-    "@types/uuid": "^8.3.0",
+    "@types/feedparser": "^2.2.8",
+    "@types/node": "^20.10.5",
+    "@types/node-fetch": "^2.6.9",
+    "@types/sanitize-html": "^2.9.5",
+    "@types/uuid": "^9.0.7",
     "feedparser": "^2.2.10",
-    "mongodb": "^3.6.6",
-    "node-fetch": "^2.6.1",
-    "sanitize-html": "^2.3.3",
-    "telegraf": "4.3.0",
+    "mongodb": "^6.3.0",
+    "node-fetch": "^3.3.2",
+    "sanitize-html": "^2.11.0",
+    "telegraf": "4.15.3",
     "telegraf-inline-menu": "^6.2.1",
     "telegram-typings": "^5.0.0",
-    "typegram": "^3.2.3",
-    "uuid": "^8.3.2"
+    "typegram": "^5.2.0",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^4.22.0",
-    "@typescript-eslint/parser": "^4.22.0",
-    "@vercel/node": "^1.9.1",
-    "@yarnpkg/pnpify": "^2.4.0",
-    "dotenv": "^8.2.0",
-    "eslint": "^7.24.0",
-    "ts-node": "^9.1.1",
-    "typescript": "~4.2.4",
-    "vercel": "^21.3.3"
+    "@typescript-eslint/eslint-plugin": "^6.15.0",
+    "@typescript-eslint/parser": "^6.15.0",
+    "@vercel/node": "^3.0.14",
+    "@yarnpkg/pnpify": "^4.0.1",
+    "dotenv": "^16.3.1",
+    "eslint": "^8.56.0",
+    "ts-node": "^10.9.2",
+    "typescript": "~5.3.3",
+    "vercel": "^33.0.1"
   }
 }

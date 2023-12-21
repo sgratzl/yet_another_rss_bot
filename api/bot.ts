@@ -27,6 +27,7 @@ bot.command('preview', preview);
 bot.command('instantview', instantView);
 
 export default async function handle(req: VercelRequest, res: VercelResponse) {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   await bot.handleUpdate(req.body);
 
   return ok(res);

@@ -1,47 +1,50 @@
-import { connect } from 'mongodb';
+import { MongoClient } from 'mongodb';
 import type { IRSSFeed } from './model';
 
 function getDB() {
-  const client = connect(process.env.MONGODB_URL!, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-  });
+  const client = new MongoClient(process.env.MONGODB_URL!);
 
-  return client.then((client) => client.db());
+  return client.db();
 }
 
 function getFeedCollection() {
-  return getDB().then((db) => db.collection('yet_another_rss_bot_feed'));
+  return getDB().collection('yet_another_rss_bot_feed');
 }
 
 export function getFeedsToUpdate(frequency: string): Promise<IRSSFeed[]> {
-  return getFeedCollection().then((c) => c.find({ frequency })).then((c) => c.toArray());
+  const c = getFeedCollection();
+  return c.find({ frequency }).toArray() as Promise<IRSSFeed[]>;
 }
 
 export function getFeeds(chatId: number): Promise<IRSSFeed[]> {
-  return getFeedCollection().then((c) => c.find({ chatId })).then((c) => c.toArray());
+  const c = getFeedCollection();
+  return c.find({ chatId }).toArray() as Promise<IRSSFeed[]>;
 }
 
 export function getFeed(chatId: number, url: string): Promise<IRSSFeed> {
-  return getFeedCollection().then((c) => c.findOne<IRSSFeed>({ chatId, url }) as Promise<IRSSFeed>);
+  const c = getFeedCollection();
+  return c.findOne<IRSSFeed>({ chatId, url }) as Promise<IRSSFeed>;
 }
 
 export function deleteFeed(chatId: number, url: string) {
-  return getFeedCollection().then((c) => c.deleteOne({ chatId, url }));
+  const c = getFeedCollection();
+  return c.deleteOne({ chatId, url });
 }
 
 export function deleteAllFeeds(chatId: number) {
-  return getFeedCollection().then((c) => c.deleteMany({ chatId }));
+  const c = getFeedCollection();
+  return c.deleteMany({ chatId });
 }
 
 export function insertFeed(feed: IRSSFeed) {
-  return getFeedCollection().then((c) => c.insertOne(feed)).then(() => feed);
+  const c = getFeedCollection();
+  return c.insertOne(feed).then(() => feed);
 }
 
-export function saveFeed(feed: IRSSFeed) {
-  return getFeedCollection().then((c) => {
-    const clone = { ...feed };
-    delete clone._id;
-    return c.updateOne({ _id: feed._id }, { '$set': clone }, { upsert: true });
-  });
+export async function saveFeed(feed: IRSSFeed) {
+  const c = getFeedCollection();
+  const clone = { ...feed };
+  delete clone._id;
+  await c.updateOne({ _id: feed._id }, { '$set': clone }, { upsert: true });
+  return true;
 }

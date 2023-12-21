@@ -13,7 +13,7 @@ function escapeHTML(text: string) {
   });
 }
 
-export default async function updateFeed(feed: IRSSFeed, telegram: Telegram) {
+export default async function updateFeed(feed: IRSSFeed, telegram: Telegram): Promise<IRSSFeed | null> {
   const parser = new FeedParser({
     feedurl: feed.url,
     addmeta: true
@@ -31,7 +31,7 @@ export default async function updateFeed(feed: IRSSFeed, telegram: Telegram) {
   const stream = await fetch(feed.url);
   const items = await new Promise<Item[]>((resolve, reject) => {
     const items: Item[] = [];
-    stream.body.pipe(parser)
+    stream.body!.pipe(parser)
       .on('data', (item: Item) => {
         const date = item.date || item.meta.date;
         if (date && date > lastUpdate) {
@@ -76,5 +76,5 @@ export default async function updateFeed(feed: IRSSFeed, telegram: Telegram) {
       }
       return m.catch(() => telegram.sendMessage(feed.chatId, r, NO_PREVIEW_HTML));
     })).catch(() => telegram.sendMessage(feed.chatId, 'error during sending message', NO_PREVIEW_HTML)).then(() => feed);
-  });
+  }).catch(() => telegram.sendMessage(feed.chatId, 'error during sending message', NO_PREVIEW_HTML)).then(() => feed);
 }

@@ -1,7 +1,7 @@
-import type { ObjectID } from 'mongodb';
+import type { ObjectId } from 'mongodb';
 
 export interface IRSSFeed {
-  _id?: ObjectID;
+  _id?: ObjectId;
 
   chatId: number;
   url: string;
