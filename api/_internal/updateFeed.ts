@@ -1,5 +1,4 @@
 import type { IRSSFeed } from './model';
-import fetch from 'node-fetch';
 import FeedParser, { Item } from 'feedparser';
 import { NO_PREVIEW_HTML, HTML, hiddenCharacter } from './telegram';
 import type { Telegram } from 'telegraf';

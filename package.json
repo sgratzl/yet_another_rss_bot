@@ -31,12 +31,10 @@
   "dependencies": {
     "@types/feedparser": "^2.2.8",
     "@types/node": "^20.10.5",
-    "@types/node-fetch": "^2.6.9",
     "@types/sanitize-html": "^2.9.5",
     "@types/uuid": "^9.0.7",
     "feedparser": "^2.2.10",
     "mongodb": "^6.3.0",
-    "node-fetch": "^3.3.2",
     "sanitize-html": "^2.11.0",
     "telegraf": "4.15.3",
     "telegraf-inline-menu": "^6.2.1",
