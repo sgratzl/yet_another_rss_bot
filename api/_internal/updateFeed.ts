@@ -76,5 +76,5 @@ export default async function updateFeed(feed: IRSSFeed, telegram: Telegram) {
       }
       return m.catch(() => telegram.sendMessage(feed.chatId, r, NO_PREVIEW_HTML));
     })).catch(() => telegram.sendMessage(feed.chatId, 'error during sending message', NO_PREVIEW_HTML)).then(() => feed);
-  });
+  }).catch(() => telegram.sendMessage(feed.chatId, 'error during sending message', NO_PREVIEW_HTML)).then(() => feed);
 }
