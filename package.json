@@ -44,6 +44,7 @@
     "uuid": "^9.0.1"
   },
   "devDependencies": {
+    "@types/node-fetch": "^2.6.9",
     "@typescript-eslint/eslint-plugin": "^6.15.0",
     "@typescript-eslint/parser": "^6.15.0",
     "@vercel/node": "^3.0.14",
