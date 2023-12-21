@@ -29,9 +29,9 @@ export default async function updateFeed(feed: IRSSFeed, telegram: Telegram): Pr
   };
 
   const stream = await fetch(feed.url);
-  const items = await new Promise<Item[]>((resolve, reject) => {
+  const items = new Promise<Item[]>((resolve, reject) => {
     const items: Item[] = [];
-    stream.body!.pipe(parser)
+    stream.body.pipe(parser)
       .on('data', (item: Item) => {
         const date = item.date || item.meta.date;
         if (date && date > lastUpdate) {
@@ -42,7 +42,7 @@ export default async function updateFeed(feed: IRSSFeed, telegram: Telegram): Pr
       .on('error', (error: any) => reject(error));
   });
 
-  return Promise.all(items).then((items) => {
+  return items.then((items) => {
     if (items.length === 0) {
       return null;
     }
@@ -76,5 +76,5 @@ export default async function updateFeed(feed: IRSSFeed, telegram: Telegram): Pr
       }
       return m.catch(() => telegram.sendMessage(feed.chatId, r, NO_PREVIEW_HTML));
     })).catch(() => telegram.sendMessage(feed.chatId, 'error during sending message', NO_PREVIEW_HTML)).then(() => feed);
-  }).catch(() => telegram.sendMessage(feed.chatId, 'error during sending message', NO_PREVIEW_HTML)).then(() => feed);
+  }).catch(() => telegram.sendMessage(feed.chatId, 'error during parsing feed', NO_PREVIEW_HTML)).then(() => feed);
 }
