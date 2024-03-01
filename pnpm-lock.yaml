@@ -27,8 +27,8 @@ dependencies:
     specifier: ^2.7.0
     version: 2.7.0
   sanitize-html:
-    specifier: ^2.11.0
-    version: 2.11.0
+    specifier: ^2.12.1
+    version: 2.12.1
   telegraf:
     specifier: 4.15.3
     version: 4.15.3
@@ -2423,8 +2423,8 @@ packages:
     engines: {node: '>= 0.10'}
     dev: false
 
-  /sanitize-html@2.11.0:
-    resolution: {integrity: sha512-BG68EDHRaGKqlsNjJ2xUB7gpInPA8gVx/mvjO743hZaeMCZ2DwzW7xvsqZ+KNU4QKwj86HJ3uu2liISf2qBBUA==}
+  /sanitize-html@2.12.1:
+    resolution: {integrity: sha512-Plh+JAn0UVDpBRP/xEjsk+xDCoOvMBwQUf/K+/cBAVuTbtX8bj2VB7S1sL1dssVpykqp0/KPSesHrqXtokVBpA==}
     dependencies:
       deepmerge: 4.3.1
       escape-string-regexp: 4.0.0
